@@ -1,34 +1,58 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import RobotScene from "./robot/RobotScene.jsx";
+import VoiceAssistant from "./VoiceAssistant.jsx";
+import { speak } from "../utils/speak.js";
 
 function Hero() {
-  return (
-    <section className="relative min-h-screen bg-slate-900 overflow-hidden flex items-center justify-center pt-20">
-      {/* Animated background blobs */}
-      <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-indigo-500/30 rounded-full blur-3xl animate-pulse" />
-      <div className="absolute bottom-1/4 right-1/4 w-72 h-72 bg-purple-500/30 rounded-full blur-3xl animate-pulse" />
+  const [transcript, setTranscript] = useState("");
 
-      {/* Main content */}
-      <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
+  const handleTranscript = (text) => {
+    setTranscript(text);
+    speak(
+      "Great question! Binary Search works by repeatedly dividing the search range in half.",
+      () => {},
+    );
+  };
+
+  return (
+    <section className="relative min-h-screen bg-slate-900 overflow-hidden flex flex-col items-center justify-center pt-20 pb-20">
+      <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-indigo-500/30 rounded-full blur-3xl animate-pulse pointer-events-none" />
+      <div className="absolute bottom-1/4 right-1/4 w-72 h-72 bg-purple-500/30 rounded-full blur-3xl animate-pulse pointer-events-none" />
+
+      <div className="relative z-10 max-w-4xl mx-auto px-6 text-center flex flex-col items-center">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-4xl md:text-6xl font-bold text-white mb-6"
+          className="text-4xl md:text-6xl font-bold text-white mb-0"
         >
           Meet <span className="text-indigo-400">Nova</span>, Your Personal AI
           Tutor
         </motion.h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-lg text-slate-400 mb-10 max-w-2xl mx-auto"
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="flex justify-center items-center w-full -mt-8 -mb-60"
         >
-          Learn Computer Science with a friendly AI that explains, teaches, and
-          guides you step by step — like having a mentor available 24/7.
-        </motion.p>
+          <RobotScene emotion="idle" />
+        </motion.div>
+
+        {/* Mic button right below the robot */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="flex flex-col items-center gap-2 mb-6 translate-x-55"
+        >
+          <VoiceAssistant onTranscript={handleTranscript} />
+          {transcript && (
+            <p className="text-slate-400 text-sm">You said: "{transcript}"</p>
+          )}
+        </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -43,8 +67,7 @@ function Hero() {
           </Link>
         </motion.div>
 
-        {/* Floating glassmorphism cards */}
-        <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
           {[
             {
               title: "AI-Powered",
