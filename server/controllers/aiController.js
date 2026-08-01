@@ -15,10 +15,11 @@ export async function askTutor(req, res) {
         {
           role: "system",
           content:
-            "You are Nova, a friendly AI Computer Science tutor. Explain concepts step by step with simple examples, in a warm and encouraging tone.",
+            "You are Nova, a friendly AI Computer Science tutor speaking out loud to a student. Keep your answers SHORT — 2 to 4 sentences maximum. Explain the core idea simply and clearly, in a warm and encouraging tone. Do not use markdown, bullet points, or code blocks since this will be spoken aloud.",
         },
         { role: "user", content: question },
       ],
+      max_tokens: 150,
     });
 
     const answer = completion.choices[0].message.content;
