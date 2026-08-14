@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+body {
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+.font-academic {
+  font-family: "Source Serif 4", Georgia, serif;
+}
+
+
+/* Styling for AI-generated markdown notes on the Study page */
+.markdown-notes {
+  color: #cbd5e1; /* slate-300 */
+  line-height: 1.75;
+}
+.markdown-notes h1,
+.markdown-notes h2,
+.markdown-notes h3 {
+  color: #ffffff;
+  font-weight: 700;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+.markdown-notes h1 { font-size: 1.5rem; }
+.markdown-notes h2 { font-size: 1.25rem; }
+.markdown-notes h3 { font-size: 1.1rem; }
+.markdown-notes p { margin-bottom: 1em; }
+.markdown-notes ul,
+.markdown-notes ol {
+  margin-left: 1.5em;
+  margin-bottom: 1em;
+}
+.markdown-notes li { margin-bottom: 0.4em; }
+.markdown-notes strong { color: #ffffff; font-weight: 600; }
+.markdown-notes code {
+  background: rgba(255, 255, 255, 0.08);
+  color: #a5b4fc; /* indigo-300 */
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+.markdown-notes pre {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 1em;
+  overflow-x: auto;
+  margin-bottom: 1em;
+}
+.markdown-notes pre code {
+  background: none;
+  padding: 0;
+  color: #e2e8f0;
+}
