@@ -150,18 +150,44 @@ function Hero() {
 
   return (
     <section className="relative bg-slate-900 overflow-hidden pt-28 pb-16">
-      <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-72 h-72 bg-slate-500/10 rounded-full blur-3xl pointer-events-none" />
+      {/* Animated moving background blobs */}
+      <motion.div
+        animate={{
+          x: [0, 40, 0],
+          y: [0, 30, 0],
+        }}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-1/4 left-1/4 w-72 h-72 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"
+      />
+      <motion.div
+        animate={{
+          x: [0, -30, 0],
+          y: [0, -40, 0],
+        }}
+        transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute bottom-1/4 right-1/4 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"
+      />
+      <motion.div
+        animate={{
+          x: [0, 25, 0],
+          y: [0, -20, 0],
+        }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-1/2 right-1/3 w-56 h-56 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none"
+      />
 
       <div className="relative z-10 max-w-5xl mx-auto px-6 flex flex-col items-center text-center">
-        {/* Small credibility badge */}
+        {/* Floating credibility badge */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          animate={{ opacity: 1, y: [0, -4, 0] }}
+          transition={{
+            opacity: { duration: 0.5 },
+            y: { duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 },
+          }}
           className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 text-xs text-slate-300 mb-6"
         >
-          <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full" />
+          <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
           University-level Computer Science tutoring, powered by AI
         </motion.div>
 
@@ -171,8 +197,15 @@ function Hero() {
           transition={{ duration: 0.6 }}
           className="font-academic text-4xl md:text-6xl font-bold text-white mb-4"
         >
-          Meet <span className="text-indigo-400">Nova</span>, Your Personal AI
-          Tutor
+          Meet{" "}
+          <motion.span
+            className="text-indigo-400 inline-block"
+            animate={{ scale: [1, 1.05, 1] }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+          >
+            Nova
+          </motion.span>
+          , Your Personal AI Tutor
         </motion.h1>
 
         <motion.p
@@ -186,7 +219,7 @@ function Hero() {
           diagrams, and get coding help — all in one place.
         </motion.p>
 
-        <div className="flex flex-col md:flex-row items-start justify-center gap-8 w-full mb-10">
+        <div className="flex flex-col md:flex-row items-start justify-center gap-8 w-full -mb-24">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -219,15 +252,17 @@ function Hero() {
           transition={{ duration: 0.6, delay: 0.5 }}
           className="mb-16"
         >
-          <Link
-            to="/register"
-            className="inline-block bg-indigo-500 hover:bg-indigo-600 text-white font-medium px-8 py-3 rounded-lg transition-colors"
-          >
-            Start Learning Free
-          </Link>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}>
+            <Link
+              to="/register"
+              className="inline-block bg-indigo-500 hover:bg-indigo-600 text-white font-medium px-8 py-3 rounded-lg transition-colors shadow-lg shadow-indigo-500/20"
+            >
+              Start Learning Free
+            </Link>
+          </motion.div>
         </motion.div>
 
-        {/* Stats bar for credibility */}
+        {/* Stats bar */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -239,15 +274,21 @@ function Hero() {
             { value: "2", label: "Languages Supported" },
             { value: "10+", label: "CS Subject Areas" },
             { value: "100%", label: "Free to Get Started" },
-          ].map((stat) => (
-            <div key={stat.label}>
+          ].map((stat, i) => (
+            <motion.div
+              key={stat.label}
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: i * 0.08 }}
+            >
               <p className="font-academic text-2xl md:text-3xl font-bold text-white">
                 {stat.value}
               </p>
               <p className="text-slate-500 text-xs md:text-sm mt-1">
                 {stat.label}
               </p>
-            </div>
+            </motion.div>
           ))}
         </motion.div>
 
@@ -284,8 +325,9 @@ function Hero() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: (i % 3) * 0.1 }}
-              className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-6 text-left"
+              whileHover={{ y: -4, borderColor: "rgba(99,102,241,0.4)" }}
+              transition={{ duration: 0.5, delay: (i % 3) * 0.1 }}
+              className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-6 text-left cursor-default"
             >
               <h3 className="text-white font-semibold mb-2">{card.title}</h3>
               <p className="text-slate-400 text-sm leading-relaxed">

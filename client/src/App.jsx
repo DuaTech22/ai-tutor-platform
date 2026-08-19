@@ -8,6 +8,7 @@ import CourseDetail from "./pages/CourseDetail.jsx";
 import Quiz from "./pages/Quiz.jsx";
 import AdminPanel from "./pages/AdminPanel.jsx";
 import Study from "./pages/Study.jsx";
+import SavedNotes from "./pages/SavedNotes.jsx";
 import Forum from "./pages/Forum.jsx";
 import CodingAssistant from "./pages/CodingAssistant.jsx";
 import Whiteboard from "./pages/Whiteboard.jsx";
@@ -36,6 +37,14 @@ function App() {
         element={
           <ProtectedRoute>
             <Study />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/my-notes"
+        element={
+          <ProtectedRoute>
+            <SavedNotes />
           </ProtectedRoute>
         }
       />

@@ -75,3 +75,47 @@ export async function debugCode(req, res) {
       .json({ error: "Could not debug the code. Please try again." });
   }
 }
+
+// Reviews code quality: style, best practices, readability, complexity --
+// like a code review from a senior engineer / instructor, not just bug-fixing.
+export async function reviewCodeQuality(req, res) {
+  try {
+    const { code, language } = req.body;
+
+    if (!code || !code.trim()) {
+      return res.status(400).json({ error: "Please provide some code." });
+    }
+
+    const completion = await groq().chat.completions.create({
+      model: "llama-3.3-70b-versatile",
+      messages: [
+        {
+          role: "system",
+          content: `You are a senior software engineer performing a code quality review for a Computer Science student, similar to a code review before merging a pull request. Evaluate the code on:
+
+1. **Naming & Readability** -- are variable/function names clear?
+2. **Structure & Organization** -- is the code well-organized, is there unnecessary duplication?
+3. **Best Practices** -- does it follow common conventions for the language?
+4. **Efficiency** -- any obvious time/space complexity concerns?
+5. **Overall Rating** -- give a rating out of 10 with a one-line justification.
+
+Use markdown with clear headings for each section. Be constructive and specific -- point to exact lines/patterns, not vague generalities. This is meant to teach good coding habits, not just fix bugs.`,
+        },
+        {
+          role: "user",
+          content: `Language: ${language || "unspecified"}\n\nCode:\n\`\`\`\n${code}\n\`\`\``,
+        },
+      ],
+      max_tokens: 900,
+      temperature: 0.4,
+    });
+
+    const review = completion.choices[0].message.content;
+    res.json({ review });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "Could not review the code. Please try again." });
+  }
+}

@@ -34,7 +34,7 @@ For valid Computer Science questions: Keep your answers SHORT -- 3 to 5 sentence
 ${languageInstruction}`;
 
     const completion = await groq.chat.completions.create({
-      model: "llama-3.3-70b-versatile",
+      model: "openai/gpt-oss-120b",
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: question },
@@ -47,7 +47,9 @@ ${languageInstruction}`;
     res.json({ answer });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Something went wrong with the AI request." });
+    res
+      .status(500)
+      .json({ error: "Something went wrong with the AI request." });
   }
 }
 

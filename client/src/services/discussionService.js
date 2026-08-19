@@ -1,6 +1,7 @@
 import axios from "axios";
+import { API_BASE_URL } from "../config.js";
 
-const API_URL = "http://localhost:5000/api/discussions";
+const API_URL = `${API_BASE_URL}/discussions`;
 
 export async function getDiscussions() {
   const res = await axios.get(API_URL);

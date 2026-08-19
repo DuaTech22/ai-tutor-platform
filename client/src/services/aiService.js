@@ -1,6 +1,7 @@
 import axios from "axios";
+import { API_BASE_URL } from "../config.js";
 
-const API_URL = "http://localhost:5000/api/ai";
+const API_URL = `${API_BASE_URL}/ai`;
 
 export async function askTutor(question, language = "en", level = "beginner") {
   const res = await axios.post(`${API_URL}/ask`, { question, language, level });
@@ -11,7 +12,7 @@ export async function playSpeech(text, language = "en") {
   const response = await axios.post(
     `${API_URL}/speak`,
     { text, language },
-    { responseType: "blob" }
+    { responseType: "blob" },
   );
 
   const audioBlob = new Blob([response.data], { type: "audio/mpeg" });

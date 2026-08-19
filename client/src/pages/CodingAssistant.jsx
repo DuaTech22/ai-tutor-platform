@@ -3,7 +3,11 @@ import Editor from "@monaco-editor/react";
 import ReactMarkdown from "react-markdown";
 import Navbar from "../components/Navbar.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
-import { explainCode, debugCode } from "../services/codeService.js";
+import {
+  explainCode,
+  debugCode,
+  reviewCodeQuality,
+} from "../services/codeService.js";
 
 const languages = [
   "javascript",
@@ -18,7 +22,7 @@ const languages = [
 function CodingAssistant() {
   const { token } = useAuth();
   const [code, setCode] = useState(
-    "// Paste or write your code here, then click Explain or Debug",
+    "// Paste or write your code here, then click Explain, Debug, or Review",
   );
   const [language, setLanguage] = useState("javascript");
   const [errorMessage, setErrorMessage] = useState("");
@@ -57,6 +61,21 @@ function CodingAssistant() {
     }
   };
 
+  const handleReview = async () => {
+    setError("");
+    setResult("");
+    setMode("review");
+    setLoading(true);
+    try {
+      const review = await reviewCodeQuality(code, language, token);
+      setResult(review);
+    } catch (err) {
+      setError(err.response?.data?.error || "Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-900">
       <Navbar />
@@ -65,8 +84,8 @@ function CodingAssistant() {
           Coding Assistant
         </h1>
         <p className="text-slate-400 mb-6">
-          Paste your code and let Nova explain it line by line, or help you
-          debug an error.
+          Paste your code and let Nova explain it, help you debug an error, or
+          review its quality like a senior engineer would.
         </p>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -103,22 +122,27 @@ function CodingAssistant() {
               className="w-full mt-3 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm outline-none focus:border-indigo-400"
             />
 
-            <div className="flex gap-3 mt-3">
+            <div className="grid grid-cols-3 gap-2 mt-3">
               <button
                 onClick={handleExplain}
                 disabled={loading}
-                className="flex-1 bg-indigo-500 hover:bg-indigo-600 disabled:opacity-50 text-white font-medium py-2.5 rounded-lg transition-colors"
+                className="bg-indigo-500 hover:bg-indigo-600 disabled:opacity-50 text-white font-medium py-2.5 rounded-lg transition-colors text-sm"
               >
-                {loading && mode === "explain"
-                  ? "Explaining..."
-                  : "Explain Code"}
+                {loading && mode === "explain" ? "..." : "Explain"}
               </button>
               <button
                 onClick={handleDebug}
                 disabled={loading}
-                className="flex-1 bg-white/5 border border-white/10 hover:bg-white/10 disabled:opacity-50 text-white font-medium py-2.5 rounded-lg transition-colors"
+                className="bg-white/5 border border-white/10 hover:bg-white/10 disabled:opacity-50 text-white font-medium py-2.5 rounded-lg transition-colors text-sm"
               >
-                {loading && mode === "debug" ? "Debugging..." : "Debug / Fix"}
+                {loading && mode === "debug" ? "..." : "Debug / Fix"}
+              </button>
+              <button
+                onClick={handleReview}
+                disabled={loading}
+                className="bg-white/5 border border-white/10 hover:bg-white/10 disabled:opacity-50 text-white font-medium py-2.5 rounded-lg transition-colors text-sm"
+              >
+                {loading && mode === "review" ? "..." : "Review Quality"}
               </button>
             </div>
           </div>
@@ -134,7 +158,9 @@ function CodingAssistant() {
             )}
             {loading ? (
               <p className="text-indigo-300 text-sm animate-pulse">
-                Nova is thinking through your code...
+                {mode === "review"
+                  ? "Nova is reviewing your code quality..."
+                  : "Nova is thinking through your code..."}
               </p>
             ) : result ? (
               <div className="markdown-notes">
@@ -142,7 +168,8 @@ function CodingAssistant() {
               </div>
             ) : (
               <p className="text-slate-500 text-sm">
-                Your explanation or debugging results will appear here.
+                Your explanation, debugging results, or quality review will
+                appear here.
               </p>
             )}
           </div>

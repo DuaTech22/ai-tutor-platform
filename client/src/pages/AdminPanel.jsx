@@ -8,6 +8,7 @@ import {
 } from "../services/courseService.js";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext.jsx";
+import { API_BASE_URL } from "../config.js";
 
 function AdminPanel() {
   const { token } = useAuth();
@@ -55,7 +56,7 @@ function AdminPanel() {
     setMessage("");
     try {
       await axios.post(
-        "http://localhost:5000/api/courses",
+        `${API_BASE_URL}/courses`,
         { title, description, category, lessons: [] },
         { headers: { Authorization: `Bearer ${token}` } },
       );
@@ -85,7 +86,7 @@ function AdminPanel() {
     setGenerating(true);
     try {
       await axios.post(
-        "http://localhost:5000/api/generate/course",
+        `${API_BASE_URL}/generate/course`,
         { topic: genTopic },
         { headers: { Authorization: `Bearer ${token}` } },
       );
@@ -136,7 +137,7 @@ function AdminPanel() {
 
     try {
       await axios.post(
-        "http://localhost:5000/api/quizzes",
+        `${API_BASE_URL}/quizzes`,
         { course: quizCourseId, title: quizTitle, questions },
         { headers: { Authorization: `Bearer ${token}` } },
       );

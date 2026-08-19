@@ -2,8 +2,9 @@ import { useEffect, useState, useRef } from "react";
 import { Bell } from "lucide-react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext.jsx";
+import { API_BASE_URL } from "../config.js";
 
-const API_URL = "http://localhost:5000/api/notifications";
+const API_URL = `${API_BASE_URL}/notifications`;
 
 function NotificationBell() {
   const { token } = useAuth();

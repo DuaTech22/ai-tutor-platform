@@ -14,6 +14,7 @@ import discussionRoutes from "./routes/discussionRoutes.js";
 import codeRoutes from "./routes/codeRoutes.js";
 import diagramRoutes from "./routes/diagramRoutes.js";
 import notificationRoutes from "./routes/notificationRoutes.js";
+import savedNoteRoutes from "./routes/savedNoteRoutes.js";
 
 dotenv.config();
 
@@ -58,6 +59,7 @@ app.use("/api/discussions", discussionRoutes);
 app.use("/api/code", codeRoutes);
 app.use("/api/diagram", diagramRoutes);
 app.use("/api/notifications", notificationRoutes);
+app.use("/api/saved-notes", savedNoteRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

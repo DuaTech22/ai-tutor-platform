@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar.jsx";
 import ReactMarkdown from "react-markdown";
 import { useAuth } from "../context/AuthContext.jsx";
 import { generateNotes, generateQuiz } from "../services/studyService.js";
+import { saveNote } from "../services/savedNoteService.js";
 
 const suggestedTopics = [
   "Arrays and Linked Lists",
@@ -22,6 +23,7 @@ function Study() {
   const [notes, setNotes] = useState("");
   const [loadingNotes, setLoadingNotes] = useState(false);
   const [error, setError] = useState("");
+  const [saveMessage, setSaveMessage] = useState("");
 
   const [quiz, setQuiz] = useState(null);
   const [loadingQuiz, setLoadingQuiz] = useState(false);
@@ -29,14 +31,20 @@ function Study() {
   const [score, setScore] = useState(0);
   const [finished, setFinished] = useState(false);
 
+  const [selected, setSelected] = useState(null);
+  const [answered, setAnswered] = useState(false);
+
   const handleGenerateNotes = async (e) => {
     e?.preventDefault();
     if (!topic.trim()) return;
 
     setError("");
     setNotes("");
+    setSaveMessage("");
     setQuiz(null);
     setFinished(false);
+    setSelected(null);
+    setAnswered(false);
     setLoadingNotes(true);
 
     try {
@@ -45,10 +53,20 @@ function Study() {
     } catch (err) {
       setError(
         err.response?.data?.error ||
-          "Could not generate notes. Please try again."
+          "Could not generate notes. Please try again.",
       );
     } finally {
       setLoadingNotes(false);
+    }
+  };
+
+  const handleSaveNotes = async () => {
+    setSaveMessage("");
+    try {
+      await saveNote(topic, notes, level, token);
+      setSaveMessage("Notes saved! View them anytime in 'My Notes'.");
+    } catch (err) {
+      setSaveMessage("Could not save notes. Please try again.");
     }
   };
 
@@ -59,24 +77,33 @@ function Study() {
     setCurrent(0);
     setScore(0);
     setFinished(false);
+    setSelected(null);
+    setAnswered(false);
 
     try {
       const questions = await generateQuiz(topic, notes, level, token);
       setQuiz(questions);
     } catch (err) {
       setError(
-        err.response?.data?.error || "Could not generate a quiz. Please try again."
+        err.response?.data?.error ||
+          "Could not generate a quiz. Please try again.",
       );
     } finally {
       setLoadingQuiz(false);
     }
   };
 
-  const handleAnswer = (selected) => {
-    const isCorrect = selected === quiz[current].correctAnswer;
-    const newScore = isCorrect ? score + 1 : score;
-    setScore(newScore);
+  const handleSelect = (option) => {
+    if (answered) return;
+    const isCorrect = option === quiz[current].correctAnswer;
+    setSelected(option);
+    setAnswered(true);
+    if (isCorrect) setScore((s) => s + 1);
+  };
 
+  const handleNext = () => {
+    setSelected(null);
+    setAnswered(false);
     if (current + 1 < quiz.length) {
       setCurrent((c) => c + 1);
     } else {
@@ -84,11 +111,24 @@ function Study() {
     }
   };
 
+  const getOptionStyle = (option) => {
+    if (!answered) return "bg-white/5 hover:bg-white/10 border-white/10";
+    if (option === quiz[current].correctAnswer) {
+      return "bg-emerald-500/20 border-emerald-400 text-emerald-200";
+    }
+    if (option === selected) {
+      return "bg-red-500/20 border-red-400 text-red-200";
+    }
+    return "bg-white/5 border-white/10 opacity-50";
+  };
+
   return (
     <div className="min-h-screen bg-slate-900">
       <Navbar />
       <div className="pt-24 px-6 max-w-4xl mx-auto pb-20 text-white">
-        <h1 className="font-academic text-3xl font-bold mb-2">Study with Nova</h1>
+        <h1 className="font-academic text-3xl font-bold mb-2">
+          Notes with Nova
+        </h1>
         <p className="text-slate-400 mb-8">
           Enter any Computer Science topic — Nova will generate university-level
           notes, then a quiz to test your understanding.
@@ -116,7 +156,9 @@ function Study() {
             <button
               onClick={() => setLevel("beginner")}
               className={`px-3 py-1 rounded-full transition-colors ${
-                level === "beginner" ? "bg-indigo-500 text-white" : "text-slate-400"
+                level === "beginner"
+                  ? "bg-indigo-500 text-white"
+                  : "text-slate-400"
               }`}
             >
               Beginner
@@ -124,7 +166,9 @@ function Study() {
             <button
               onClick={() => setLevel("advanced")}
               className={`px-3 py-1 rounded-full transition-colors ${
-                level === "advanced" ? "bg-indigo-500 text-white" : "text-slate-400"
+                level === "advanced"
+                  ? "bg-indigo-500 text-white"
+                  : "text-slate-400"
               }`}
             >
               Advanced
@@ -136,9 +180,7 @@ function Study() {
           {suggestedTopics.map((t) => (
             <button
               key={t}
-              onClick={() => {
-                setTopic(t);
-              }}
+              onClick={() => setTopic(t)}
               className="text-xs bg-white/5 border border-white/10 hover:bg-white/10 text-slate-300 px-3 py-1.5 rounded-full transition-colors"
             >
               {t}
@@ -158,13 +200,27 @@ function Study() {
               <ReactMarkdown>{notes}</ReactMarkdown>
             </div>
 
-            <button
-              onClick={handleGenerateQuiz}
-              disabled={loadingQuiz}
-              className="mt-6 bg-indigo-500 hover:bg-indigo-600 disabled:opacity-50 text-white font-medium px-6 py-2.5 rounded-lg transition-colors"
-            >
-              {loadingQuiz ? "Generating quiz..." : "Test Yourself: Generate a Quiz"}
-            </button>
+            {saveMessage && (
+              <p className="text-indigo-300 text-sm mt-4">{saveMessage}</p>
+            )}
+
+            <div className="flex flex-wrap gap-3 mt-6">
+              <button
+                onClick={handleGenerateQuiz}
+                disabled={loadingQuiz}
+                className="bg-indigo-500 hover:bg-indigo-600 disabled:opacity-50 text-white font-medium px-6 py-2.5 rounded-lg transition-colors"
+              >
+                {loadingQuiz
+                  ? "Generating quiz..."
+                  : "Test Yourself: Generate a Quiz"}
+              </button>
+              <button
+                onClick={handleSaveNotes}
+                className="bg-white/5 border border-white/10 hover:bg-white/10 text-white font-medium px-6 py-2.5 rounded-lg transition-colors"
+              >
+                💾 Save Notes
+              </button>
+            </div>
           </div>
         )}
 
@@ -195,13 +251,37 @@ function Study() {
                   {quiz[current].options.map((opt) => (
                     <button
                       key={opt}
-                      onClick={() => handleAnswer(opt)}
-                      className="block w-full text-left bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg p-3 transition-colors"
+                      onClick={() => handleSelect(opt)}
+                      disabled={answered}
+                      className={`block w-full text-left border rounded-lg p-3 transition-colors ${getOptionStyle(opt)}`}
                     >
                       {opt}
+                      {answered && opt === quiz[current].correctAnswer && (
+                        <span className="float-right text-emerald-300 text-xs">
+                          ✓ Correct
+                        </span>
+                      )}
+                      {answered &&
+                        opt === selected &&
+                        opt !== quiz[current].correctAnswer && (
+                          <span className="float-right text-red-300 text-xs">
+                            ✗ Your answer
+                          </span>
+                        )}
                     </button>
                   ))}
                 </div>
+
+                {answered && (
+                  <button
+                    onClick={handleNext}
+                    className="mt-6 bg-indigo-500 hover:bg-indigo-600 text-white font-medium px-6 py-2.5 rounded-lg transition-colors"
+                  >
+                    {current + 1 < quiz.length
+                      ? "Next Question"
+                      : "Finish Quiz"}
+                  </button>
+                )}
               </div>
             )}
           </div>

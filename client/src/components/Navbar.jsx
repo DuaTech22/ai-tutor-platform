@@ -39,6 +39,11 @@ function Navbar() {
             </Link>
           )}
           {user && (
+            <Link to="/my-notes" className="hover:text-white transition-colors">
+              My Notes
+            </Link>
+          )}
+          {user && (
             <Link to="/code" className="hover:text-white transition-colors">
               Code
             </Link>

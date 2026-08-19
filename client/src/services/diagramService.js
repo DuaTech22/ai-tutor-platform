@@ -1,6 +1,7 @@
 import axios from "axios";
+import { API_BASE_URL } from "../config.js";
 
-const API_URL = "http://localhost:5000/api/diagram";
+const API_URL = `${API_BASE_URL}/diagram`;
 
 export async function generateDiagram(topic, token) {
   const res = await axios.post(

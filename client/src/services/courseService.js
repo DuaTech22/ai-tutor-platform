@@ -1,8 +1,9 @@
 import axios from "axios";
+import { API_BASE_URL } from "../config.js";
 
-const API_URL = "http://localhost:5000/api/courses";
-const QUIZ_URL = "http://localhost:5000/api/quizzes";
-const CERT_URL = "http://localhost:5000/api/certificates";
+const API_URL = `${API_BASE_URL}/courses`;
+const QUIZ_URL = `${API_BASE_URL}/quizzes`;
+const CERT_URL = `${API_BASE_URL}/certificates`;
 
 export async function getCourses() {
   const res = await axios.get(API_URL);
