@@ -20,6 +20,9 @@ dotenv.config();
 
 const app = express();
 
+// ✅ FIX: Trust proxy for Railway
+app.set("trust proxy", 1);
+
 app.use(cors());
 app.use(express.json({ limit: "1mb" }));
 app.use(helmet());
@@ -34,7 +37,7 @@ const generalLimiter = rateLimit({
 });
 app.use("/api", generalLimiter);
 
-// Stricter limit for auth endpoints, to slow down brute-force attempts
+// Stricter limit for auth endpoints
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 20,
@@ -46,9 +49,10 @@ const authLimiter = rateLimit({
 });
 app.use("/api/auth", authLimiter);
 
-// Connect to MongoDB (auth/courses/quizzes need this; AI chat/voice work without it)
+// Connect to MongoDB
 connectDB();
 
+// Routes
 app.use("/api/ai", aiRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/courses", courseRoutes);
@@ -60,6 +64,15 @@ app.use("/api/code", codeRoutes);
 app.use("/api/diagram", diagramRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/saved-notes", savedNoteRoutes);
+
+// Health Check Route (Add this too)
+app.get("/api/health", (req, res) => {
+  res.json({
+    status: "OK",
+    message: "Server is running",
+    timestamp: new Date().toISOString(),
+  });
+});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
