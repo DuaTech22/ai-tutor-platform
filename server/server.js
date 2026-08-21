@@ -20,9 +20,6 @@ dotenv.config();
 
 const app = express();
 
-// Tell Express to trust Railway's reverse proxy, so it can correctly
-// read the real client IP from the X-Forwarded-For header (needed for
-// express-rate-limit to work properly in this hosted environment).
 app.set("trust proxy", 1);
 
 app.use(cors());
@@ -50,6 +47,14 @@ const authLimiter = rateLimit({
 app.use("/api/auth", authLimiter);
 
 connectDB();
+
+app.get("/api/health", (req, res) => {
+  res.json({
+    status: "OK",
+    message: "Server is running",
+    timestamp: new Date().toISOString(),
+  });
+});
 
 app.use("/api/ai", aiRoutes);
 app.use("/api/auth", authRoutes);
