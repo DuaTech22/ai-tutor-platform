@@ -20,12 +20,14 @@ dotenv.config();
 
 const app = express();
 
+// ✅ FIX: Trust proxy for Railway
 app.set("trust proxy", 1);
 
 app.use(cors());
 app.use(express.json({ limit: "1mb" }));
 app.use(helmet());
 
+// General rate limit
 const generalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 300,
@@ -35,6 +37,7 @@ const generalLimiter = rateLimit({
 });
 app.use("/api", generalLimiter);
 
+// Auth rate limit
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 20,
@@ -48,6 +51,7 @@ app.use("/api/auth", authLimiter);
 
 connectDB();
 
+// ✅ Health Check Route
 app.get("/api/health", (req, res) => {
   res.json({
     status: "OK",
@@ -56,6 +60,7 @@ app.get("/api/health", (req, res) => {
   });
 });
 
+// Routes
 app.use("/api/ai", aiRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/courses", courseRoutes);
