@@ -12,6 +12,8 @@ import SavedNotes from "./pages/SavedNotes.jsx";
 import Forum from "./pages/Forum.jsx";
 import CodingAssistant from "./pages/CodingAssistant.jsx";
 import Whiteboard from "./pages/Whiteboard.jsx";
+import ForgotPassword from "./pages/ForgotPassword.jsx";
+import ResetPassword from "./pages/ResetPassword.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 function App() {
@@ -20,6 +22,8 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/courses" element={<Courses />} />
       <Route path="/courses/:id" element={<CourseDetail />} />
       <Route path="/courses/:id/quiz" element={<Quiz />} />

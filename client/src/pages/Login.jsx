@@ -30,7 +30,9 @@ function Login() {
     <div className="min-h-screen bg-slate-900 flex items-center justify-center px-6">
       <div className="w-full max-w-sm bg-white/5 border border-white/10 rounded-2xl p-8">
         <h1 className="text-2xl font-bold text-white mb-1">Welcome back</h1>
-        <p className="text-slate-400 text-sm mb-6">Log in to continue learning with Nova.</p>
+        <p className="text-slate-400 text-sm mb-6">
+          Log in to continue learning with Nova.
+        </p>
 
         {error && (
           <p className="bg-red-500/10 border border-red-500/30 text-red-300 text-sm rounded-lg px-3 py-2 mb-4">
@@ -50,7 +52,9 @@ function Login() {
             />
           </div>
           <div>
-            <label className="block text-sm text-slate-300 mb-1">Password</label>
+            <label className="block text-sm text-slate-300 mb-1">
+              Password
+            </label>
             <input
               type="password"
               required
@@ -58,6 +62,14 @@ function Login() {
               onChange={(e) => setPassword(e.target.value)}
               className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white outline-none focus:border-indigo-400"
             />
+          </div>
+          <div className="text-right">
+            <Link
+              to="/forgot-password"
+              className="text-indigo-400 text-xs hover:underline"
+            >
+              Forgot password?
+            </Link>
           </div>
           <button
             type="submit"
