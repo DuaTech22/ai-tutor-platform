@@ -4,23 +4,17 @@ import { requestPasswordReset } from "../services/authService.js";
 
 function ForgotPassword() {
   const [email, setEmail] = useState("");
-  const [resetLink, setResetLink] = useState("");
+  const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    setResetLink("");
     setLoading(true);
     try {
-      const data = await requestPasswordReset(email);
-      if (data.resetToken) {
-        const link = `${window.location.origin}/reset-password?token=${data.resetToken}`;
-        setResetLink(link);
-      } else {
-        setResetLink("sent");
-      }
+      await requestPasswordReset(email);
+      setSent(true);
     } catch (err) {
       setError(err.response?.data?.error || "Something went wrong.");
     } finally {
@@ -35,7 +29,7 @@ function ForgotPassword() {
           Reset your password
         </h1>
         <p className="text-slate-400 text-sm mb-6">
-          Enter your email and we'll generate a reset link.
+          Enter your email and we'll send you a reset link.
         </p>
 
         {error && (
@@ -44,26 +38,13 @@ function ForgotPassword() {
           </p>
         )}
 
-        {resetLink && resetLink !== "sent" ? (
+        {sent ? (
           <div className="bg-indigo-500/10 border border-indigo-500/30 rounded-lg p-4">
-            <p className="text-indigo-200 text-sm mb-2">
-              Note: no email service is configured for this build, so here's
-              your reset link directly:
+            <p className="text-indigo-200 text-sm">
+              📧 If an account with that email exists, a reset link has been
+              sent. Please check your inbox (and spam folder).
             </p>
-            <a
-              href={resetLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-indigo-300 text-xs break-all underline"
-            >
-              {resetLink}
-            </a>
           </div>
-        ) : resetLink === "sent" ? (
-          <p className="text-indigo-300 text-sm">
-            If an account with that email exists, a reset link has been
-            generated.
-          </p>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <input
@@ -79,7 +60,7 @@ function ForgotPassword() {
               disabled={loading}
               className="w-full bg-indigo-500 hover:bg-indigo-600 disabled:opacity-50 text-white font-medium py-2.5 rounded-lg transition-colors"
             >
-              {loading ? "Please wait..." : "Send Reset Link"}
+              {loading ? "Sending..." : "Send Reset Link"}
             </button>
           </form>
         )}

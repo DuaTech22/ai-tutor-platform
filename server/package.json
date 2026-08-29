@@ -21,6 +21,7 @@
     "helmet": "^8.3.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.7.0",
+    "nodemailer": "^9.0.6",
     "openai": "^4.68.0",
     "pdfkit": "^0.15.0"
   },

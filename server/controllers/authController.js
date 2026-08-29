@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import User from "../models/User.js";
 import { createNotification } from "./notificationController.js";
+import { sendEmail } from "../utils/sendEmail.js";
 
 function generateToken(user) {
   return jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
@@ -113,7 +114,7 @@ export async function forgotPassword(req, res) {
     if (!user) {
       return res.json({
         message:
-          "If an account with that email exists, a reset link has been generated.",
+          "If an account with that email exists, a reset link has been sent.",
       });
     }
 
@@ -127,9 +128,25 @@ export async function forgotPassword(req, res) {
     user.resetPasswordExpires = Date.now() + 60 * 60 * 1000;
     await user.save();
 
+    const resetUrl = `${process.env.CLIENT_URL}/reset-password?token=${rawToken}`;
+
+    await sendEmail(
+      user.email,
+      "Reset Your AI Tutor Password",
+      `
+      <div style="font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; padding: 20px;">
+        <h2 style="color: #4f46e5;">AI Tutor Password Reset</h2>
+        <p>Hi ${user.name},</p>
+        <p>We received a request to reset your password. Click the button below to set a new password. This link expires in 1 hour.</p>
+        <a href="${resetUrl}" style="display: inline-block; background: #4f46e5; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; margin: 16px 0;">Reset Password</a>
+        <p style="color: #666; font-size: 13px;">If you didn't request this, you can safely ignore this email.</p>
+      </div>
+      `,
+    );
+
     res.json({
-      message: "Reset link generated.",
-      resetToken: rawToken,
+      message:
+        "If an account with that email exists, a reset link has been sent.",
     });
   } catch (err) {
     console.error(err);
