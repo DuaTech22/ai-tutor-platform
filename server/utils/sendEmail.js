@@ -1,4 +1,4 @@
-import brevo from "@getbrevo/brevo";
+import * as brevo from "@getbrevo/brevo";
 
 export async function sendEmail(to, subject, html) {
   const apiInstance = new brevo.TransactionalEmailsApi();
