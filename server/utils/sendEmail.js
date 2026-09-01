@@ -1,22 +1,17 @@
-import nodemailer from "nodemailer";
+import brevo from "@getbrevo/brevo";
 
 export async function sendEmail(to, subject, html) {
-  const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false,
-    requireTLS: true,
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-    family: 4,
-  });
+  const apiInstance = new brevo.TransactionalEmailsApi();
+  apiInstance.setApiKey(
+    brevo.TransactionalEmailsApiApiKeys.apiKey,
+    process.env.BREVO_API_KEY,
+  );
 
-  await transporter.sendMail({
-    from: `"AI Tutor" <${process.env.EMAIL_USER}>`,
-    to,
-    subject,
-    html,
-  });
+  const email = new brevo.SendSmtpEmail();
+  email.sender = { name: "AI Tutor", email: process.env.BREVO_SENDER_EMAIL };
+  email.to = [{ email: to }];
+  email.subject = subject;
+  email.htmlContent = html;
+
+  await apiInstance.sendTransacEmail(email);
 }

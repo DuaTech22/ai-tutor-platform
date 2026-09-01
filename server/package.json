@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@andresaya/edge-tts": "^1.0.0",
+    "@getbrevo/brevo": "^6.0.3",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
@@ -23,7 +24,8 @@
     "mongoose": "^8.7.0",
     "nodemailer": "^9.0.6",
     "openai": "^4.68.0",
-    "pdfkit": "^0.15.0"
+    "pdfkit": "^0.15.0",
+    "resend": "^6.25.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"
