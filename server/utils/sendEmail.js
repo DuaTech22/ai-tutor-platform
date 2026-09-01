@@ -1,5 +1,7 @@
 import * as brevo from "@getbrevo/brevo";
 
+console.log("🔍 Brevo exports:", Object.keys(brevo));
+
 export async function sendEmail(to, subject, html) {
   const apiInstance = new brevo.TransactionalEmailsApi();
   apiInstance.setApiKey(
