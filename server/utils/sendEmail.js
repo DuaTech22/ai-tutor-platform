@@ -1,27 +1,20 @@
-import { Brevo } from "@getbrevo/brevo";
+import axios from "axios";
 
 export async function sendEmail(to, subject, html) {
-  try {
-    console.log("📧 Sending email to:", to);
-
-    const brevoClient = new Brevo({
-      apiKey: process.env.BREVO_API_KEY,
-    });
-
-    const response = await brevoClient.sendTransacEmail({
-      sender: {
-        name: "AI Tutor",
-        email: process.env.BREVO_SENDER_EMAIL,
-      },
+  await axios.post(
+    "https://api.brevo.com/v3/smtp/email",
+    {
+      sender: { name: "AI Tutor", email: process.env.BREVO_SENDER_EMAIL },
       to: [{ email: to }],
-      subject: subject,
+      subject,
       htmlContent: html,
-    });
-
-    console.log("✅ Email sent successfully!");
-    return response;
-  } catch (error) {
-    console.error("❌ Brevo API error:", error.message);
-    throw new Error("Failed to send email");
-  }
+    },
+    {
+      headers: {
+        "api-key": process.env.BREVO_API_KEY,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    },
+  );
 }
