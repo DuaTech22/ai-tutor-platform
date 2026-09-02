@@ -63,7 +63,7 @@ export async function convertToRoman(req, res) {
     });
 
     const completion = await groq.chat.completions.create({
-      model: "llama3-70b-8192", // ✅ FIXED: Changed to available model
+      model: "llama-3.1-70b-versatile", // ✅ Updated
       messages: [
         {
           role: "system",
