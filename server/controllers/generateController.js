@@ -58,7 +58,7 @@ export async function generateNotes(req, res) {
         : "Write for a beginner undergraduate audience -- keep terminology accessible and build up from fundamentals, while still being academically accurate.";
 
     const completion = await groq().chat.completions.create({
-      model: "llama-3.3-70b-versatile",
+      model: "llama3-70b-8192", // ✅ FIXED
       messages: [
         {
           role: "system",
@@ -94,7 +94,7 @@ export async function generateQuiz(req, res) {
         : "Keep the questions at an introductory level -- test basic understanding of the core concept.";
 
     const completion = await groq().chat.completions.create({
-      model: "llama-3.3-70b-versatile",
+      model: "llama3-70b-8192", // ✅ FIXED
       response_format: { type: "json_object" },
       messages: [
         {
@@ -138,7 +138,7 @@ export async function generateCourse(req, res) {
     const { topic } = req.body;
 
     const completion = await groq().chat.completions.create({
-      model: "llama-3.3-70b-versatile",
+      model: "llama3-70b-8192", // ✅ FIXED
       response_format: { type: "json_object" },
       messages: [
         {
