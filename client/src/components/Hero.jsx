@@ -149,8 +149,7 @@ function Hero() {
   };
 
   return (
-    // ✅ FIX 1: Added px-2 for mobile padding
-    <section className="relative bg-slate-900 overflow-hidden pt-24 md:pt-28 pb-16 px-2">
+    <section className="relative bg-slate-900 overflow-hidden pt-24 md:pt-28 pb-8 md:pb-16 px-2">
       {/* Animated moving background blobs */}
       <motion.div
         animate={{
@@ -177,7 +176,6 @@ function Hero() {
         className="absolute top-1/2 right-1/3 w-56 h-56 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none"
       />
 
-      {/* ✅ FIX 2: Changed px-6 to px-4 md:px-6 */}
       <div className="relative z-10 max-w-5xl mx-auto px-4 md:px-6 flex flex-col items-center text-center">
         {/* Floating credibility badge */}
         <motion.div
@@ -193,7 +191,6 @@ function Hero() {
           University-level Computer Science tutoring, powered by AI
         </motion.div>
 
-        {/* ✅ FIX 3: Added text-3xl sm:text-4xl for mobile */}
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -222,7 +219,8 @@ function Hero() {
           diagrams, and get coding help — all in one place.
         </motion.p>
 
-        <div className="flex flex-col md:flex-row items-start justify-center gap-8 w-full -mb-24">
+        {/* ✅ FIXED: Removed negative margin, added gap */}
+        <div className="flex flex-col md:flex-row items-start justify-center gap-6 md:gap-8 w-full mb-8 md:mb-12">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -249,11 +247,12 @@ function Hero() {
           </motion.div>
         </div>
 
+        {/* ✅ FIXED: CTA Button - now properly spaced */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.5 }}
-          className="mb-16"
+          className="mb-12 md:mb-16"
         >
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}>
             <Link
