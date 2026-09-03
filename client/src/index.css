@@ -8,7 +8,52 @@ body {
   font-family: "Source Serif 4", Georgia, serif;
 }
 
+/* ===== CUSTOM SCROLLBAR ===== */
+/* For WebKit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
 
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #6366f1;
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4f46e5;
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #6366f1 transparent;
+}
+
+/* ===== BLACKBOARD SCROLLBAR ===== */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #6366f1;
+  border-radius: 20px;
+}
+
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: #6366f1 transparent;
+}
+
+/* ===== MARKDOWN STYLING ===== */
 /* Styling for AI-generated markdown notes on the Study page */
 .markdown-notes {
   color: #cbd5e1; /* slate-300 */
@@ -22,17 +67,30 @@ body {
   margin-top: 1.5em;
   margin-bottom: 0.5em;
 }
-.markdown-notes h1 { font-size: 1.5rem; }
-.markdown-notes h2 { font-size: 1.25rem; }
-.markdown-notes h3 { font-size: 1.1rem; }
-.markdown-notes p { margin-bottom: 1em; }
+.markdown-notes h1 {
+  font-size: 1.5rem;
+}
+.markdown-notes h2 {
+  font-size: 1.25rem;
+}
+.markdown-notes h3 {
+  font-size: 1.1rem;
+}
+.markdown-notes p {
+  margin-bottom: 1em;
+}
 .markdown-notes ul,
 .markdown-notes ol {
   margin-left: 1.5em;
   margin-bottom: 1em;
 }
-.markdown-notes li { margin-bottom: 0.4em; }
-.markdown-notes strong { color: #ffffff; font-weight: 600; }
+.markdown-notes li {
+  margin-bottom: 0.4em;
+}
+.markdown-notes strong {
+  color: #ffffff;
+  font-weight: 600;
+}
 .markdown-notes code {
   background: rgba(255, 255, 255, 0.08);
   color: #a5b4fc; /* indigo-300 */
