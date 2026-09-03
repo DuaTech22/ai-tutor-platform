@@ -23,7 +23,9 @@ export async function askTutor(req, res) {
 
     const levelInstruction = getLevelInstruction(level);
 
-    const systemPrompt = `You are Nova, a friendly AI tutor who specializes STRICTLY in Computer Science topics. Your allowed subjects include: Programming (any language), Data Structures, Algorithms, Operating Systems, Database Systems, Computer Networks, Software Engineering, Object-Oriented Programming, Artificial Intelligence, Web Development, Computer Architecture, and related Computer Science fundamentals.
+    const systemPrompt = `You are Nova, a friendly AI tutor who specializes STRICTLY in Computer Science topics. You identify as male. When responding in Urdu/Roman Urdu, use masculine gender pronouns (e.g. "main karta hoon" instead of "main karti hoon", "mujhe aata hai" instead of "mujhe aati hai", "main kahoon" instead of "main kahoon gi").
+
+Your allowed subjects include: Programming (any language), Data Structures, Algorithms, Operating Systems, Database Systems, Computer Networks, Software Engineering, Object-Oriented Programming, Artificial Intelligence, Web Development, Computer Architecture, and related Computer Science fundamentals.
 
 If a student asks about anything OUTSIDE Computer Science (e.g. cooking, sports, general trivia, entertainment, personal advice, medicine, other academic subjects like biology or history), politely decline and redirect them, saying something like "I'm Nova, and I specialize in Computer Science topics! Feel free to ask me about programming, data structures, algorithms, or any other CS subject." Keep this redirect SHORT (1-2 sentences) and in the same language as requested.
 
@@ -34,7 +36,7 @@ For valid Computer Science questions: Keep your answers SHORT -- 3 to 5 sentence
 ${languageInstruction}`;
 
     const completion = await groq.chat.completions.create({
-      model: "openai/gpt-oss-120b",
+      model: "llama-3.1-70b-versatile", // ✅ Updated to available model
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: question },
@@ -63,7 +65,7 @@ export async function convertToRoman(req, res) {
     });
 
     const completion = await groq.chat.completions.create({
-      model: "openai/gpt-oss-120b",
+      model: "llama-3.1-70b-versatile", // ✅ Updated to available model
       messages: [
         {
           role: "system",

@@ -149,7 +149,7 @@ function Hero() {
   };
 
   return (
-    <section className="relative bg-slate-900 overflow-hidden pt-24 md:pt-28 pb-8 md:pb-16 px-2">
+    <section className="relative bg-slate-900 overflow-hidden pt-24 md:pt-28 pb-8 md:pb-12 px-2">
       {/* Animated moving background blobs */}
       <motion.div
         animate={{
@@ -212,15 +212,15 @@ function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-slate-400 max-w-xl mb-10 leading-relaxed"
+          className="text-slate-400 max-w-xl mb-8 leading-relaxed"
         >
           Ask a question by voice or text, in English or Roman Urdu, and get a
           clear, spoken explanation instantly. Generate study notes, quizzes,
           diagrams, and get coding help — all in one place.
         </motion.p>
 
-        {/* Robot + Blackboard section - NO negative margin */}
-        <div className="flex flex-col md:flex-row items-start justify-center gap-6 md:gap-8 w-full mb-6 md:mb-8">
+        {/* Robot + Blackboard section - NO margin */}
+        <div className="flex flex-col md:flex-row items-start justify-center gap-6 md:gap-8 w-full mb-0">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -247,11 +247,12 @@ function Hero() {
           </motion.div>
         </div>
 
-        {/* ✅ FIXED: Button - NO margin, directly below blackboard */}
+        {/* ✅ FIXED: Button - NO margin */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.5 }}
+          className="mt-0"
         >
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}>
             <Link
