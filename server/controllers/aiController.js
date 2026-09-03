@@ -34,7 +34,7 @@ For valid Computer Science questions: Keep your answers SHORT -- 3 to 5 sentence
 ${languageInstruction}`;
 
     const completion = await groq.chat.completions.create({
-      model: "llama3-70b-8192", // ✅ FIXED: Changed to available model
+      model: "openai/gpt-oss-120b",
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: question },
@@ -63,7 +63,7 @@ export async function convertToRoman(req, res) {
     });
 
     const completion = await groq.chat.completions.create({
-      model: "llama-3.1-70b-versatile", // ✅ Updated
+      model: "openai/gpt-oss-120b",
       messages: [
         {
           role: "system",

@@ -6,6 +6,9 @@ const groq = () =>
     baseURL: "https://api.groq.com/openai/v1",
   });
 
+// Safely parses AI-generated JSON, cleaning up common issues like raw
+// newlines/tabs inside string literals (which are technically invalid JSON
+// but models sometimes produce anyway).
 function safeJSONParse(raw) {
   let cleaned = raw.trim();
   cleaned = cleaned
@@ -55,7 +58,7 @@ export async function generateNotes(req, res) {
         : "Write for a beginner undergraduate audience -- keep terminology accessible and build up from fundamentals, while still being academically accurate.";
 
     const completion = await groq().chat.completions.create({
-      model: "llama-3.1-70b-versatile", // ✅ FIXED
+      model: "openai/gpt-oss-120b",
       messages: [
         {
           role: "system",
@@ -91,7 +94,7 @@ export async function generateQuiz(req, res) {
         : "Keep the questions at an introductory level -- test basic understanding of the core concept.";
 
     const completion = await groq().chat.completions.create({
-      model: "llama-3.1-70b-versatile", // ✅ FIXED
+      model: "openai/gpt-oss-120b",
       response_format: { type: "json_object" },
       messages: [
         {
@@ -135,7 +138,7 @@ export async function generateCourse(req, res) {
     const { topic } = req.body;
 
     const completion = await groq().chat.completions.create({
-      model: "llama-3.1-70b-versatile", // ✅ FIXED
+      model: "openai/gpt-oss-120b",
       response_format: { type: "json_object" },
       messages: [
         {
