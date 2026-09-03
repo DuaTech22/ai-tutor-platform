@@ -1,12 +1,19 @@
 import { motion } from "framer-motion";
 import VoiceAssistant from "./VoiceAssistant.jsx";
 
-function Blackboard({ text, thinking, onTranscript, onStop, level, onLevelChange }) {
+function Blackboard({
+  text,
+  thinking,
+  onTranscript,
+  onStop,
+  level,
+  onLevelChange,
+}) {
   return (
-    <div className="relative w-full max-w-sm">
+    <div className="relative w-full max-w-sm mx-auto">
       <div className="relative rounded-lg p-3 bg-gradient-to-b from-[#8b5a2b] to-[#6b4423] shadow-2xl">
         <div
-          className="relative rounded-md overflow-hidden px-6 py-6 min-h-[280px] flex flex-col"
+          className="relative rounded-md overflow-hidden px-5 md:px-6 py-5 md:py-6 flex flex-col"
           style={{
             background: "#111111",
             boxShadow: "inset 0 0 60px rgba(0,0,0,0.6)",
@@ -22,16 +29,17 @@ function Blackboard({ text, thinking, onTranscript, onStop, level, onLevelChange
           />
 
           <p
-            className="relative z-10 text-white/90 text-lg mb-3 border-b border-dashed border-white/20 pb-2"
+            className="relative z-10 text-white/90 text-base md:text-lg mb-3 border-b border-dashed border-white/20 pb-2"
             style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
           >
             Nova — Study Notes
           </p>
 
-          <div className="relative z-10 flex-1 flex items-center">
+          {/* Fixed-height scrollable text area -- never grows and pushes the button below */}
+          <div className="relative z-10 h-40 md:h-48 overflow-y-auto pr-1">
             {thinking ? (
               <p
-                className="text-indigo-300 text-base animate-pulse"
+                className="text-indigo-300 text-sm md:text-base animate-pulse"
                 style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
               >
                 writing an answer...
@@ -40,7 +48,7 @@ function Blackboard({ text, thinking, onTranscript, onStop, level, onLevelChange
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="text-white/90 text-base leading-relaxed"
+                className="text-white/90 text-sm md:text-base leading-relaxed"
                 style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
               >
                 {text}
@@ -55,13 +63,15 @@ function Blackboard({ text, thinking, onTranscript, onStop, level, onLevelChange
             )}
           </div>
 
-          <div className="relative z-10 flex justify-center pt-4 mt-2 border-t border-dashed border-white/20">
+          <div className="relative z-10 flex justify-center pt-3 mt-2 border-t border-dashed border-white/20 flex-shrink-0">
             <div className="flex flex-col items-center gap-2">
               <div className="flex bg-white/5 border border-white/10 rounded-full p-0.5 text-[10px]">
                 <button
                   onClick={() => onLevelChange && onLevelChange("beginner")}
                   className={`px-2.5 py-1 rounded-full transition-colors ${
-                    level !== "advanced" ? "bg-indigo-500 text-white" : "text-slate-400"
+                    level !== "advanced"
+                      ? "bg-indigo-500 text-white"
+                      : "text-slate-400"
                   }`}
                 >
                   Beginner
@@ -69,13 +79,19 @@ function Blackboard({ text, thinking, onTranscript, onStop, level, onLevelChange
                 <button
                   onClick={() => onLevelChange && onLevelChange("advanced")}
                   className={`px-2.5 py-1 rounded-full transition-colors ${
-                    level === "advanced" ? "bg-indigo-500 text-white" : "text-slate-400"
+                    level === "advanced"
+                      ? "bg-indigo-500 text-white"
+                      : "text-slate-400"
                   }`}
                 >
                   Advanced
                 </button>
               </div>
-              <VoiceAssistant onTranscript={onTranscript} onStop={onStop} compact />
+              <VoiceAssistant
+                onTranscript={onTranscript}
+                onStop={onStop}
+                compact
+              />
             </div>
           </div>
         </div>

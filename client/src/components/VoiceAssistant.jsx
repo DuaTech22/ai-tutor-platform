@@ -2,9 +2,20 @@ import { useState, useRef } from "react";
 import { Mic, Square, X } from "lucide-react";
 import { convertToRoman } from "../services/aiService.js";
 
-function VoiceAssistant({ onTranscript, onStop, compact }) {
+function VoiceAssistant({
+  onTranscript,
+  onStop,
+  compact,
+  language: controlledLanguage,
+  onLanguageChange,
+}) {
   const [listening, setListening] = useState(false);
-  const [language, setLanguage] = useState("en");
+  const [internalLanguage, setInternalLanguage] = useState("en");
+
+  const language =
+    controlledLanguage !== undefined ? controlledLanguage : internalLanguage;
+  const setLanguage = onLanguageChange || setInternalLanguage;
+
   const recognitionRef = useRef(null);
 
   const stopEverything = () => {
@@ -28,7 +39,9 @@ function VoiceAssistant({ onTranscript, onStop, compact }) {
       window.SpeechRecognition || window.webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
-      alert("Speech recognition isn't supported in this browser. Please use Chrome.");
+      alert(
+        "Speech recognition isn't supported in this browser. Please use Chrome.",
+      );
       return;
     }
 
@@ -66,13 +79,15 @@ function VoiceAssistant({ onTranscript, onStop, compact }) {
   if (compact) {
     return (
       <div className="flex items-center gap-1 flex-shrink-0">
-        <button
-          onClick={() => setLanguage(language === "en" ? "ur" : "en")}
-          className="w-8 h-8 rounded-full bg-white/5 border border-white/10 text-[10px] font-medium text-slate-300 hover:bg-white/10 transition-colors"
-          title="Toggle language"
-        >
-          {language === "en" ? "EN" : "UR"}
-        </button>
+        {controlledLanguage === undefined && (
+          <button
+            onClick={() => setLanguage(language === "en" ? "ur" : "en")}
+            className="w-8 h-8 rounded-full bg-white/5 border border-white/10 text-[10px] font-medium text-slate-300 hover:bg-white/10 transition-colors"
+            title="Toggle language"
+          >
+            {language === "en" ? "EN" : "UR"}
+          </button>
+        )}
 
         <button
           onClick={startListening}
@@ -105,24 +120,26 @@ function VoiceAssistant({ onTranscript, onStop, compact }) {
 
   return (
     <div className="flex flex-col items-center gap-3">
-      <div className="flex bg-white/5 border border-white/10 rounded-full p-1 text-xs">
-        <button
-          onClick={() => setLanguage("en")}
-          className={`px-3 py-1 rounded-full transition-colors ${
-            language === "en" ? "bg-indigo-500 text-white" : "text-slate-400"
-          }`}
-        >
-          English
-        </button>
-        <button
-          onClick={() => setLanguage("ur")}
-          className={`px-3 py-1 rounded-full transition-colors ${
-            language === "ur" ? "bg-indigo-500 text-white" : "text-slate-400"
-          }`}
-        >
-          Urdu
-        </button>
-      </div>
+      {controlledLanguage === undefined && (
+        <div className="flex bg-white/5 border border-white/10 rounded-full p-1 text-xs">
+          <button
+            onClick={() => setLanguage("en")}
+            className={`px-3 py-1 rounded-full transition-colors ${
+              language === "en" ? "bg-indigo-500 text-white" : "text-slate-400"
+            }`}
+          >
+            English
+          </button>
+          <button
+            onClick={() => setLanguage("ur")}
+            className={`px-3 py-1 rounded-full transition-colors ${
+              language === "ur" ? "bg-indigo-500 text-white" : "text-slate-400"
+            }`}
+          >
+            Urdu
+          </button>
+        </div>
+      )}
 
       <div className="flex items-center gap-3">
         <button

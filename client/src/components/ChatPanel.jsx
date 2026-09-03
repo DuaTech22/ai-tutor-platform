@@ -43,43 +43,72 @@ function ChatPanel({ onEmotionChange, onTextChange, onThinkingChange }) {
   };
 
   const handleSend = async (text, lang) => {
+    const finalLang = lang || language;
+
     window.speechSynthesis.cancel();
     if (window.currentAudio) {
       window.currentAudio.pause();
       window.currentAudio.currentTime = 0;
     }
 
-    setLanguage(lang);
-    setMessages((prev) => [...prev, { role: "user", text, lang }]);
+    setMessages((prev) => [...prev, { role: "user", text, lang: finalLang }]);
     setThinking(true);
     if (onEmotionChange) onEmotionChange("celebrate");
     if (onThinkingChange) onThinkingChange(true);
 
     try {
-      const answer = await askTutor(text, lang);
+      const answer = await askTutor(text, finalLang);
       setThinking(false);
-      setMessages((prev) => [...prev, { role: "nova", text: answer, lang }]);
+      setMessages((prev) => [
+        ...prev,
+        { role: "nova", text: answer, lang: finalLang },
+      ]);
       if (onThinkingChange) onThinkingChange(false);
       if (onTextChange) onTextChange(answer);
-      speakAnswer(answer, lang);
+      speakAnswer(answer, finalLang);
     } catch (error) {
       setThinking(false);
       console.error("AI request failed:", error);
       const fallback =
-        lang === "ur"
+        finalLang === "ur"
           ? "Maazrat, mujhe jawab dene mein mushkil hui. Dobara koshish karein."
           : "Sorry, I had trouble answering that. Please try again.";
-      setMessages((prev) => [...prev, { role: "nova", text: fallback, lang }]);
+      setMessages((prev) => [
+        ...prev,
+        { role: "nova", text: fallback, lang: finalLang },
+      ]);
       if (onThinkingChange) onThinkingChange(false);
       if (onTextChange) onTextChange(fallback);
-      speakAnswer(fallback, lang);
+      speakAnswer(fallback, finalLang);
       if (onEmotionChange) onEmotionChange("idle");
     }
   };
 
   return (
-    <div className="w-full max-w-md bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl flex flex-col overflow-hidden">
-      <div className="h-80 overflow-y-auto p-4 flex flex-col gap-3">
+    <div className="w-[90vw] max-w-md bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl flex flex-col overflow-hidden">
+      {/* Shared language toggle for both text and voice */}
+      <div className="flex justify-center pt-3">
+        <div className="flex bg-white/5 border border-white/10 rounded-full p-1 text-xs">
+          <button
+            onClick={() => setLanguage("en")}
+            className={`px-3 py-1 rounded-full transition-colors ${
+              language === "en" ? "bg-indigo-500 text-white" : "text-slate-400"
+            }`}
+          >
+            English
+          </button>
+          <button
+            onClick={() => setLanguage("ur")}
+            className={`px-3 py-1 rounded-full transition-colors ${
+              language === "ur" ? "bg-indigo-500 text-white" : "text-slate-400"
+            }`}
+          >
+            Urdu
+          </button>
+        </div>
+      </div>
+
+      <div className="h-72 md:h-80 overflow-y-auto p-4 flex flex-col gap-3">
         {messages.length === 0 && !thinking && (
           <p className="text-slate-500 text-sm text-center m-auto">
             Ask Nova anything — type or use the mic below.
@@ -92,7 +121,6 @@ function ChatPanel({ onEmotionChange, onTextChange, onThinkingChange }) {
             className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
           >
             <div
-              dir={msg.lang === "ur" ? "rtl" : "ltr"}
               className={`max-w-[80%] px-4 py-2 rounded-2xl text-sm leading-relaxed ${
                 msg.role === "user"
                   ? "bg-indigo-500 text-white rounded-br-sm"
@@ -128,7 +156,13 @@ function ChatPanel({ onEmotionChange, onTextChange, onThinkingChange }) {
 
       <div className="border-t border-white/10 p-3 flex items-center gap-2">
         <TextChat onSend={handleSend} language={language} compact />
-        <VoiceAssistant onTranscript={handleSend} onStop={handleStop} compact />
+        <VoiceAssistant
+          onTranscript={handleSend}
+          onStop={handleStop}
+          compact
+          language={language}
+          onLanguageChange={setLanguage}
+        />
       </div>
     </div>
   );

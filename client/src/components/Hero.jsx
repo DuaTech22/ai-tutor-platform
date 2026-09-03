@@ -149,7 +149,8 @@ function Hero() {
   };
 
   return (
-    <section className="relative bg-slate-900 overflow-hidden pt-28 pb-16">
+    // ✅ FIX 1: Added px-2 for mobile padding
+    <section className="relative bg-slate-900 overflow-hidden pt-24 md:pt-28 pb-16 px-2">
       {/* Animated moving background blobs */}
       <motion.div
         animate={{
@@ -176,7 +177,8 @@ function Hero() {
         className="absolute top-1/2 right-1/3 w-56 h-56 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none"
       />
 
-      <div className="relative z-10 max-w-5xl mx-auto px-6 flex flex-col items-center text-center">
+      {/* ✅ FIX 2: Changed px-6 to px-4 md:px-6 */}
+      <div className="relative z-10 max-w-5xl mx-auto px-4 md:px-6 flex flex-col items-center text-center">
         {/* Floating credibility badge */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
@@ -191,11 +193,12 @@ function Hero() {
           University-level Computer Science tutoring, powered by AI
         </motion.div>
 
+        {/* ✅ FIX 3: Added text-3xl sm:text-4xl for mobile */}
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="font-academic text-4xl md:text-6xl font-bold text-white mb-4"
+          className="font-academic text-3xl sm:text-4xl md:text-6xl font-bold text-white mb-4"
         >
           Meet{" "}
           <motion.span

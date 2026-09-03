@@ -18,108 +18,125 @@ export function generateCertificate(req, res) {
     );
     doc.pipe(res);
 
-    const pageWidth = doc.page.width;
-    const pageHeight = doc.page.height;
+    const W = doc.page.width;
+    const H = doc.page.height;
 
-    // Background
-    doc.rect(0, 0, pageWidth, pageHeight).fill("#0f172a");
+    // Cream/off-white background for a classic certificate feel
+    doc.rect(0, 0, W, H).fill("#faf7f0");
 
-    // Outer decorative border
+    // Outer ornate border (double line, gold-ish)
     doc
-      .rect(20, 20, pageWidth - 40, pageHeight - 40)
-      .lineWidth(2)
-      .stroke("#6366f1");
-
-    // Inner thin border
+      .rect(24, 24, W - 48, H - 48)
+      .lineWidth(3)
+      .stroke("#b8860b");
     doc
-      .rect(32, 32, pageWidth - 64, pageHeight - 64)
-      .lineWidth(0.5)
-      .stroke("#818cf8");
+      .rect(34, 34, W - 68, H - 68)
+      .lineWidth(1)
+      .stroke("#b8860b");
 
-    // Corner accents
-    const cornerSize = 30;
+    // Corner flourishes
+    const corner = 24;
     [
-      [40, 40],
-      [pageWidth - 40 - cornerSize, 40],
-      [40, pageHeight - 40 - cornerSize],
-      [pageWidth - 40 - cornerSize, pageHeight - 40 - cornerSize],
-    ].forEach(([x, y]) => {
+      [40, 40, 1, 1],
+      [W - 40, 40, -1, 1],
+      [40, H - 40, 1, -1],
+      [W - 40, H - 40, -1, -1],
+    ].forEach(([x, y, dx, dy]) => {
       doc
-        .moveTo(x, y + cornerSize)
+        .moveTo(x, y + corner * dy)
         .lineTo(x, y)
-        .lineTo(x + cornerSize, y)
-        .lineWidth(3)
-        .stroke("#6366f1");
+        .lineTo(x + corner * dx, y)
+        .lineWidth(2)
+        .stroke("#b8860b");
     });
 
-    // Logo / brand mark
+    // Header ribbon area
     doc
-      .fontSize(20)
-      .fillColor("#818cf8")
+      .fontSize(11)
+      .fillColor("#8b6914")
       .font("Helvetica-Bold")
-      .text("AI TUTOR", 0, 70, { align: "center" });
+      .text(
+        "A I   T U T O R   •   I N T E L L I G E N T   L E A R N I N G   P L A T F O R M",
+        0,
+        62,
+        {
+          align: "center",
+          characterSpacing: 1,
+        },
+      );
 
+    // Decorative seal (circle) top center
+    const sealX = W / 2;
+    const sealY = 105;
+    doc.circle(sealX, sealY, 26).lineWidth(2).stroke("#b8860b");
+    doc.circle(sealX, sealY, 21).lineWidth(0.75).stroke("#b8860b");
     doc
-      .fontSize(10)
-      .fillColor("#94a3b8")
+      .fontSize(9)
+      .fillColor("#b8860b")
+      .font("Helvetica-Bold")
+      .text("NOVA", sealX - 20, sealY - 10, { width: 40, align: "center" });
+    doc
+      .fontSize(6)
+      .fillColor("#8b6914")
       .font("Helvetica")
-      .text("Intelligent Learning Platform", 0, 95, { align: "center" });
-
-    // Decorative line
-    doc
-      .moveTo(pageWidth / 2 - 60, 120)
-      .lineTo(pageWidth / 2 + 60, 120)
-      .lineWidth(1)
-      .stroke("#6366f1");
+      .text("VERIFIED", sealX - 20, sealY + 2, { width: 40, align: "center" });
 
     // Title
     doc
-      .fontSize(36)
-      .fillColor("#ffffff")
+      .fontSize(34)
+      .fillColor("#2d2417")
       .font("Helvetica-Bold")
-      .text("Certificate of Completion", 0, 150, { align: "center" });
+      .text("Certificate of Completion", 0, 155, { align: "center" });
 
-    // Subtext
+    // Ornamental rule under title
+    doc
+      .moveTo(W / 2 - 100, 200)
+      .lineTo(W / 2 + 100, 200)
+      .lineWidth(1)
+      .stroke("#b8860b");
+    doc.circle(W / 2, 200, 3).fill("#b8860b");
+
+    // "presented to"
     doc
       .fontSize(13)
-      .fillColor("#cbd5e1")
-      .font("Helvetica")
-      .text("This certificate is proudly presented to", 0, 210, {
+      .fillColor("#57534e")
+      .font("Helvetica-Oblique")
+      .text("This certificate is proudly presented to", 0, 218, {
         align: "center",
       });
 
-    // Student name
+    // Student name (large, elegant)
     doc
-      .fontSize(32)
-      .fillColor("#818cf8")
+      .fontSize(38)
+      .fillColor("#7c2d12")
       .font("Helvetica-Bold")
-      .text(studentName, 0, 240, { align: "center" });
+      .text(studentName, 0, 248, { align: "center" });
 
     // Underline beneath name
-    const nameWidth = doc.widthOfString(studentName, { fontSize: 32 });
+    const nameWidth = doc.widthOfString(studentName, { fontSize: 38 });
     doc
-      .moveTo(pageWidth / 2 - nameWidth / 2 - 20, 285)
-      .lineTo(pageWidth / 2 + nameWidth / 2 + 20, 285)
-      .lineWidth(1)
-      .stroke("#4f46e5");
+      .moveTo(W / 2 - nameWidth / 2 - 30, 296)
+      .lineTo(W / 2 + nameWidth / 2 + 30, 296)
+      .lineWidth(0.75)
+      .stroke("#b8860b");
 
     // Completion text
     doc
       .fontSize(13)
-      .fillColor("#cbd5e1")
-      .font("Helvetica")
-      .text("for successfully completing the course", 0, 305, {
+      .fillColor("#57534e")
+      .font("Helvetica-Oblique")
+      .text("for successfully completing the course", 0, 316, {
         align: "center",
       });
 
     doc
-      .fontSize(22)
-      .fillColor("#ffffff")
+      .fontSize(21)
+      .fillColor("#2d2417")
       .font("Helvetica-Bold")
-      .text(courseTitle, 0, 330, { align: "center", width: pageWidth });
+      .text(courseTitle, 60, 342, { align: "center", width: W - 120 });
 
-    // Footer: date + signature line
-    const footerY = pageHeight - 110;
+    // Footer: date left, signature right
+    const footerY = H - 100;
     const today = new Date().toLocaleDateString("en-US", {
       year: "numeric",
       month: "long",
@@ -127,32 +144,40 @@ export function generateCertificate(req, res) {
     });
 
     doc
-      .fontSize(11)
-      .fillColor("#94a3b8")
+      .moveTo(90, footerY)
+      .lineTo(280, footerY)
+      .lineWidth(0.75)
+      .stroke("#b8860b");
+    doc
+      .fontSize(10)
+      .fillColor("#57534e")
       .font("Helvetica")
-      .text(`Date of Completion: ${today}`, 90, footerY, { width: 250 });
-
+      .text(today, 90, footerY + 6, { width: 190, align: "center" });
     doc
-      .moveTo(pageWidth - 340, footerY + 25)
-      .lineTo(pageWidth - 90, footerY + 25)
-      .lineWidth(1)
-      .stroke("#6366f1");
-
-    doc
-      .fontSize(12)
-      .fillColor("#ffffff")
+      .fontSize(9)
+      .fillColor("#8b6914")
       .font("Helvetica-Bold")
-      .text("Nova", pageWidth - 340, footerY - 5, {
-        width: 250,
+      .text("DATE OF COMPLETION", 90, footerY + 20, {
+        width: 190,
         align: "center",
       });
 
     doc
-      .fontSize(10)
-      .fillColor("#94a3b8")
-      .font("Helvetica")
-      .text("AI Tutor — Authorized Signature", pageWidth - 340, footerY + 30, {
-        width: 250,
+      .moveTo(W - 280, footerY)
+      .lineTo(W - 90, footerY)
+      .lineWidth(0.75)
+      .stroke("#b8860b");
+    doc
+      .fontSize(16)
+      .fillColor("#2d2417")
+      .font("Helvetica-Bold")
+      .text("Nova", W - 280, footerY - 22, { width: 190, align: "center" });
+    doc
+      .fontSize(9)
+      .fillColor("#8b6914")
+      .font("Helvetica-Bold")
+      .text("AI TUTOR — AUTHORIZED SIGNATURE", W - 280, footerY + 20, {
+        width: 190,
         align: "center",
       });
 

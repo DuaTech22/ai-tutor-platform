@@ -5,7 +5,7 @@ mermaid.initialize({ startOnLoad: false, theme: "dark" });
 
 let diagramCounter = 0;
 
-function MermaidDiagram({ chart }) {
+function MermaidDiagram({ chart, onError }) {
   const ref = useRef(null);
   const [error, setError] = useState("");
 
@@ -25,7 +25,8 @@ function MermaidDiagram({ chart }) {
       })
       .catch((err) => {
         console.error("Mermaid render error:", err);
-        setError("Could not render this diagram. Try generating it again.");
+        setError("Could not render this diagram.");
+        if (onError) onError();
       });
   }, [chart]);
 
@@ -34,7 +35,10 @@ function MermaidDiagram({ chart }) {
   }
 
   return (
-    <div ref={ref} className="bg-white/5 rounded-xl p-6 overflow-x-auto" />
+    <div
+      ref={ref}
+      className="bg-white/5 rounded-xl p-4 md:p-6 overflow-x-auto"
+    />
   );
 }
 

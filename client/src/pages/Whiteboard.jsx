@@ -19,6 +19,7 @@ function Whiteboard() {
   const [diagram, setDiagram] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [renderFailed, setRenderFailed] = useState(false);
 
   const handleGenerate = async (e) => {
     e?.preventDefault();
@@ -26,6 +27,7 @@ function Whiteboard() {
 
     setError("");
     setDiagram("");
+    setRenderFailed(false);
     setLoading(true);
     try {
       const result = await generateDiagram(topic, token);
@@ -43,14 +45,19 @@ function Whiteboard() {
   return (
     <div className="min-h-screen bg-slate-900">
       <Navbar />
-      <div className="pt-24 px-6 max-w-4xl mx-auto pb-20 text-white">
-        <h1 className="font-academic text-3xl font-bold mb-2">Whiteboard</h1>
-        <p className="text-slate-400 mb-6">
+      <div className="pt-24 px-4 md:px-6 max-w-4xl mx-auto pb-20 text-white">
+        <h1 className="font-academic text-2xl md:text-3xl font-bold mb-2">
+          Whiteboard
+        </h1>
+        <p className="text-slate-400 mb-6 text-sm md:text-base">
           Ask Nova to draw a diagram or flowchart for any Computer Science
           concept.
         </p>
 
-        <form onSubmit={handleGenerate} className="flex gap-2 mb-3">
+        <form
+          onSubmit={handleGenerate}
+          className="flex flex-col sm:flex-row gap-2 mb-3"
+        >
           <input
             value={topic}
             onChange={(e) => setTopic(e.target.value)}
@@ -90,7 +97,27 @@ function Whiteboard() {
           </p>
         )}
 
-        {diagram && <MermaidDiagram chart={diagram} />}
+        {diagram && (
+          <div>
+            <MermaidDiagram
+              chart={diagram}
+              onError={() => setRenderFailed(true)}
+            />
+            {renderFailed && (
+              <div className="mt-4 text-center">
+                <p className="text-red-300 text-sm mb-2">
+                  This diagram didn't render correctly.
+                </p>
+                <button
+                  onClick={handleGenerate}
+                  className="text-indigo-400 text-sm hover:underline"
+                >
+                  Try generating it again
+                </button>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
