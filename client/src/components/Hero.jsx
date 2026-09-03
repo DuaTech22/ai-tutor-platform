@@ -219,8 +219,8 @@ function Hero() {
           diagrams, and get coding help — all in one place.
         </motion.p>
 
-        {/* ✅ FIXED: Removed negative margin, added gap */}
-        <div className="flex flex-col md:flex-row items-start justify-center gap-6 md:gap-8 w-full mb-8 md:mb-12">
+        {/* Robot + Blackboard section - NO negative margin */}
+        <div className="flex flex-col md:flex-row items-start justify-center gap-6 md:gap-8 w-full mb-6 md:mb-8">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -247,12 +247,11 @@ function Hero() {
           </motion.div>
         </div>
 
-        {/* ✅ FIXED: CTA Button - now properly spaced */}
+        {/* ✅ FIXED: Button - NO margin, directly below blackboard */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.5 }}
-          className="mb-12 md:mb-16"
         >
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}>
             <Link
@@ -269,7 +268,7 @@ function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.55 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 w-full mb-16 border-y border-white/10 py-8"
+          className="grid grid-cols-2 md:grid-cols-4 gap-6 w-full mt-12 md:mt-16 mb-16 border-y border-white/10 py-8"
         >
           {[
             { value: "24/7", label: "AI Tutor Availability" },
@@ -340,9 +339,10 @@ function Hero() {
         </div>
       </div>
 
+      {/* ✅ FIXED: ChatWidget - NO onTextChange */}
       <ChatWidget
         onEmotionChange={setEmotion}
-        onTextChange={setBoardText}
+        // onTextChange={setBoardText} ← REMOVED! Chat won't send to blackboard
         onThinkingChange={setThinking}
       />
     </section>

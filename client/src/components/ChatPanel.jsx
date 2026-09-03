@@ -64,7 +64,7 @@ function ChatPanel({ onEmotionChange, onTextChange, onThinkingChange }) {
         { role: "nova", text: answer, lang: finalLang },
       ]);
       if (onThinkingChange) onThinkingChange(false);
-      if (onTextChange) onTextChange(answer);
+      // ✅ REMOVED: if (onTextChange) onTextChange(answer);
       speakAnswer(answer, finalLang);
     } catch (error) {
       setThinking(false);
@@ -78,7 +78,7 @@ function ChatPanel({ onEmotionChange, onTextChange, onThinkingChange }) {
         { role: "nova", text: fallback, lang: finalLang },
       ]);
       if (onThinkingChange) onThinkingChange(false);
-      if (onTextChange) onTextChange(fallback);
+      // ✅ REMOVED: if (onTextChange) onTextChange(fallback);
       speakAnswer(fallback, finalLang);
       if (onEmotionChange) onEmotionChange("idle");
     }

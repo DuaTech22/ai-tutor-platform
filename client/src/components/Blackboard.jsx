@@ -29,14 +29,14 @@ function Blackboard({
           />
 
           <p
-            className="relative z-10 text-white/90 text-base md:text-lg mb-3 border-b border-dashed border-white/20 pb-2"
+            className="relative z-10 text-white/90 text-base md:text-lg mb-3 border-b border-dashed border-white/20 pb-2 flex-shrink-0"
             style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
           >
             Nova — Study Notes
           </p>
 
-          {/* Fixed-height scrollable text area -- never grows and pushes the button below */}
-          <div className="relative z-10 h-40 md:h-48 overflow-y-auto pr-1">
+          {/* ✅ FIXED: Better scrolling with more height and proper styling */}
+          <div className="relative z-10 h-48 md:h-56 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-indigo-500 scrollbar-track-transparent">
             {thinking ? (
               <p
                 className="text-indigo-300 text-sm md:text-base animate-pulse"
@@ -48,7 +48,7 @@ function Blackboard({
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="text-white/90 text-sm md:text-base leading-relaxed"
+                className="text-white/90 text-sm md:text-base leading-relaxed whitespace-pre-wrap break-words"
                 style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
               >
                 {text}
@@ -63,6 +63,7 @@ function Blackboard({
             )}
           </div>
 
+          {/* ✅ Controls - always stays at bottom */}
           <div className="relative z-10 flex justify-center pt-3 mt-2 border-t border-dashed border-white/20 flex-shrink-0">
             <div className="flex flex-col items-center gap-2">
               <div className="flex bg-white/5 border border-white/10 rounded-full p-0.5 text-[10px]">
