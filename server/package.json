@@ -26,6 +26,7 @@
     "nodemailer": "^9.0.6",
     "openai": "^4.68.0",
     "pdfkit": "^0.15.0",
+    "plantuml-encoder": "^1.4.0",
     "resend": "^6.25.0"
   },
   "devDependencies": {
