@@ -8,8 +8,9 @@ function Footer() {
           <p className="font-academic text-lg font-bold text-white">
             AI<span className="text-indigo-400">Tutor</span>
           </p>
+          {/* ✅ CHANGED: Removed "Final Year Project" */}
           <p className="text-slate-500 text-xs mt-1">
-            Final Year Project — AI-Powered Learning Platform
+            AI-Powered Learning Platform — Learn Smarter with Nova
           </p>
         </div>
 
@@ -23,8 +24,9 @@ function Footer() {
           <Link to="/code" className="hover:text-white transition-colors">
             Coding Assistant
           </Link>
-          <Link to="/whiteboard" className="hover:text-white transition-colors">
-            Whiteboard
+          {/* ✅ CHANGED: /whiteboard → /diagram */}
+          <Link to="/diagram" className="hover:text-white transition-colors">
+            Diagram
           </Link>
         </div>
 

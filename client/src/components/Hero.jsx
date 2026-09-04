@@ -177,7 +177,7 @@ function Hero() {
       />
 
       <div className="relative z-10 max-w-5xl mx-auto px-4 md:px-6 flex flex-col items-center text-center">
-        {/* Floating credibility badge */}
+        {/* ✅ CHANGED: Updated badge text */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: [0, -4, 0] }}
@@ -188,7 +188,7 @@ function Hero() {
           className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 text-xs text-slate-300 mb-6"
         >
           <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
-          University-level Computer Science tutoring, powered by AI
+          AI-Powered Learning Platform — Learn Smarter with Nova
         </motion.div>
 
         <motion.h1
@@ -247,7 +247,7 @@ function Hero() {
           </motion.div>
         </div>
 
-        {/* ✅ FIXED: Button - NO margin */}
+        {/* Button - NO margin */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -340,7 +340,7 @@ function Hero() {
         </div>
       </div>
 
-      {/* ✅ FIXED: ChatWidget - NO onTextChange */}
+      {/* ChatWidget - NO onTextChange */}
       <ChatWidget
         onEmotionChange={setEmotion}
         // onTextChange={setBoardText} ← REMOVED! Chat won't send to blackboard

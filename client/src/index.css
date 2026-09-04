@@ -87,9 +87,10 @@ body {
 .markdown-notes li {
   margin-bottom: 0.4em;
 }
+/* ✅ CHANGED: Reduced bold font weight */
 .markdown-notes strong {
-  color: #ffffff;
-  font-weight: 600;
+  color: #cbd5e1;
+  font-weight: 400;
 }
 .markdown-notes code {
   background: rgba(255, 255, 255, 0.08);
