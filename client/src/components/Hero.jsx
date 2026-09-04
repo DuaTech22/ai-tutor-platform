@@ -219,9 +219,9 @@ function Hero() {
           diagrams, and get coding help — all in one place.
         </motion.p>
 
-        {/* ✅ Robot + Blackboard section - Robot Centered */}
-        <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8 w-full mb-0">
-          {/* Robot - Centered */}
+        {/* Robot + Blackboard section - REDUCED GAP */}
+        <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4 w-full mb-0">
+          {/* Robot */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
