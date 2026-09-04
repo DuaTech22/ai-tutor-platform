@@ -1,6 +1,5 @@
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
-import { Suspense } from "react"; // ✅ Import Suspense from react
+import { OrbitControls, Suspense } from "@react-three/drei";
 import RobotModel from "./RobotModel.jsx";
 
 function RobotScene({ emotion = "idle" }) {
