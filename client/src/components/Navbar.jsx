@@ -22,16 +22,16 @@ function Navbar() {
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur-md bg-slate-900/60 border-b border-white/10">
-      <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-3 sm:py-4 flex items-center justify-between">
         <Link
           to="/"
-          className="font-academic text-xl font-bold text-white"
+          className="font-academic text-lg sm:text-xl font-bold text-white"
           onClick={() => setMenuOpen(false)}
         >
           AI<span className="text-indigo-400">Tutor</span>
         </Link>
 
-        <div className="hidden lg:flex items-center gap-6 text-sm text-slate-300">
+        <div className="hidden lg:flex items-center gap-4 md:gap-6 text-sm text-slate-300">
           {links
             .filter((l) => l.show)
             .map((l) => (
@@ -77,12 +77,12 @@ function Navbar() {
           <NotificationBell />
           <button
             onClick={() => setMenuOpen((v) => !v)}
-            className="w-9 h-9 flex items-center justify-center text-white"
+            className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center text-white"
           >
             {menuOpen ? (
-              <X className="w-6 h-6" />
+              <X className="w-5 h-5 sm:w-6 sm:h-6" />
             ) : (
-              <Menu className="w-6 h-6" />
+              <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
             )}
           </button>
         </div>

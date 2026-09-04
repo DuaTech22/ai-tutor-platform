@@ -10,10 +10,10 @@ function Blackboard({
   onLevelChange,
 }) {
   return (
-    <div className="relative w-full max-w-sm mx-auto">
-      <div className="relative rounded-lg p-3 bg-gradient-to-b from-[#8b5a2b] to-[#6b4423] shadow-2xl">
+    <div className="relative w-full max-w-xs sm:max-w-sm mx-auto">
+      <div className="relative rounded-lg p-2 sm:p-3 bg-gradient-to-b from-[#8b5a2b] to-[#6b4423] shadow-2xl">
         <div
-          className="relative rounded-md overflow-hidden px-5 md:px-6 py-5 md:py-6 flex flex-col"
+          className="relative rounded-md overflow-hidden px-3 sm:px-5 md:px-6 py-4 sm:py-5 md:py-6 flex flex-col"
           style={{
             background: "#111111",
             boxShadow: "inset 0 0 60px rgba(0,0,0,0.6)",
@@ -29,17 +29,17 @@ function Blackboard({
           />
 
           <p
-            className="relative z-10 text-white/90 text-base md:text-lg mb-3 border-b border-dashed border-white/20 pb-2 flex-shrink-0"
+            className="relative z-10 text-white/90 text-sm sm:text-base md:text-lg mb-2 sm:mb-3 border-b border-dashed border-white/20 pb-1.5 sm:pb-2 flex-shrink-0"
             style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
           >
             Nova — Study Notes
           </p>
 
-          {/* ✅ FIXED: Better scrolling with more height and proper styling */}
-          <div className="relative z-10 h-48 md:h-56 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-indigo-500 scrollbar-track-transparent">
+          {/* Fixed-height scrollable text area */}
+          <div className="relative z-10 h-32 sm:h-40 md:h-48 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-indigo-500 scrollbar-track-transparent">
             {thinking ? (
               <p
-                className="text-indigo-300 text-sm md:text-base animate-pulse"
+                className="text-indigo-300 text-xs sm:text-sm md:text-base animate-pulse"
                 style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
               >
                 writing an answer...
@@ -48,14 +48,14 @@ function Blackboard({
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="text-white/90 text-sm md:text-base leading-relaxed whitespace-pre-wrap break-words"
+                className="text-white/90 text-xs sm:text-sm md:text-base leading-relaxed whitespace-pre-wrap break-words"
                 style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
               >
                 {text}
               </motion.p>
             ) : (
               <p
-                className="text-white/40 text-sm italic"
+                className="text-white/40 text-xs sm:text-sm italic"
                 style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
               >
                 Ask a question — Nova will write the answer here.
@@ -63,13 +63,13 @@ function Blackboard({
             )}
           </div>
 
-          {/* ✅ Controls - always stays at bottom */}
-          <div className="relative z-10 flex justify-center pt-3 mt-2 border-t border-dashed border-white/20 flex-shrink-0">
-            <div className="flex flex-col items-center gap-2">
-              <div className="flex bg-white/5 border border-white/10 rounded-full p-0.5 text-[10px]">
+          {/* Controls - always stays at bottom */}
+          <div className="relative z-10 flex justify-center pt-2 sm:pt-3 mt-1.5 sm:mt-2 border-t border-dashed border-white/20 flex-shrink-0">
+            <div className="flex flex-col items-center gap-1.5 sm:gap-2">
+              <div className="flex bg-white/5 border border-white/10 rounded-full p-0.5 text-[8px] sm:text-[10px]">
                 <button
                   onClick={() => onLevelChange && onLevelChange("beginner")}
-                  className={`px-2.5 py-1 rounded-full transition-colors ${
+                  className={`px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-full transition-colors ${
                     level !== "advanced"
                       ? "bg-indigo-500 text-white"
                       : "text-slate-400"
@@ -79,7 +79,7 @@ function Blackboard({
                 </button>
                 <button
                   onClick={() => onLevelChange && onLevelChange("advanced")}
-                  className={`px-2.5 py-1 rounded-full transition-colors ${
+                  className={`px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-full transition-colors ${
                     level === "advanced"
                       ? "bg-indigo-500 text-white"
                       : "text-slate-400"
@@ -97,9 +97,9 @@ function Blackboard({
           </div>
         </div>
 
-        <div className="h-3 mt-1 rounded-full bg-gradient-to-b from-[#a67c52] to-[#7a5230] shadow-inner flex items-center justify-center gap-1">
-          <div className="w-6 h-1.5 bg-white/80 rounded-sm" />
-          <div className="w-4 h-1.5 bg-white/60 rounded-sm" />
+        <div className="h-2 sm:h-3 mt-1 rounded-full bg-gradient-to-b from-[#a67c52] to-[#7a5230] shadow-inner flex items-center justify-center gap-1">
+          <div className="w-4 sm:w-6 h-1 sm:h-1.5 bg-white/80 rounded-sm" />
+          <div className="w-3 sm:w-4 h-1 sm:h-1.5 bg-white/60 rounded-sm" />
         </div>
       </div>
     </div>
