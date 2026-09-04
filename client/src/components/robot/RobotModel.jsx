@@ -11,22 +11,27 @@ function RobotModel({ emotion = "idle" }) {
   const { camera } = useThree();
 
   useEffect(() => {
-    headRef.current = scene.getObjectByName("head");
+    if (scene) {
+      headRef.current = scene.getObjectByName("head");
+    }
 
-    const box = new THREE.Box3().setFromObject(scene);
-    const size = box.getSize(new THREE.Vector3());
-    const center = box.getCenter(new THREE.Vector3());
-    const maxDim = Math.max(size.x, size.y, size.z);
-    camera.position.set(center.x, center.y, maxDim * 2.2);
-    camera.lookAt(center.x, center.y, center.z);
+    if (scene && camera) {
+      const box = new THREE.Box3().setFromObject(scene);
+      const size = box.getSize(new THREE.Vector3());
+      const center = box.getCenter(new THREE.Vector3());
+      const maxDim = Math.max(size.x, size.y, size.z);
+      camera.position.set(center.x, center.y, maxDim * 2.2);
+      camera.lookAt(center.x, center.y, center.z);
+    }
   }, [scene, camera]);
 
   useFrame(({ mouse, clock }, delta) => {
     if (!group.current) return;
-    const t = clock.elapsedTime;
 
+    const t = clock.elapsedTime;
     const speed = emotion === "celebrate" ? 5 : 1.5;
     const bobAmount = emotion === "celebrate" ? 0.18 : 0.05;
+
     group.current.position.y = Math.sin(t * speed) * bobAmount;
 
     const targetRotY = mouse.x * 0.3;
@@ -34,18 +39,23 @@ function RobotModel({ emotion = "idle" }) {
     group.current.rotation.y += (targetRotY - group.current.rotation.y) * 0.05;
     group.current.rotation.x += (targetRotX - group.current.rotation.x) * 0.05;
 
-    setBlinkTimer((prev) => {
-      const next = prev + delta;
-      if (headRef.current) {
+    // Blink animation
+    if (headRef.current) {
+      setBlinkTimer((prev) => {
+        const next = prev + delta;
         if (next > 4 && next < 4.15) {
           headRef.current.scale.y = 0.85;
         } else {
           headRef.current.scale.y = 1;
         }
-      }
-      return next > 4.15 ? 0 : next;
-    });
+        return next > 4.15 ? 0 : next;
+      });
+    }
   });
+
+  if (!scene) {
+    return null;
+  }
 
   return (
     <group ref={group}>
@@ -55,4 +65,6 @@ function RobotModel({ emotion = "idle" }) {
 }
 
 export default RobotModel;
+
+// Preload the model
 useGLTF.preload("/models/scene.gltf");
