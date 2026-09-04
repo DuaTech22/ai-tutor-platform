@@ -16,7 +16,7 @@ function Navbar() {
     { to: "/study", label: "Notes", show: !!user },
     { to: "/my-notes", label: "My Notes", show: !!user },
     { to: "/code", label: "Code", show: !!user },
-    { to: "/whiteboard", label: "Whiteboard", show: !!user },
+    { to: "/diagram", label: "Diagram", show: !!user }, // ✅ Changed from Whiteboard
     { to: "/admin", label: "Admin", show: user?.role === "admin" },
   ];
 
