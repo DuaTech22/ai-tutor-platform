@@ -6,6 +6,46 @@ const groq = () =>
     baseURL: "https://api.groq.com/openai/v1",
   });
 
+// ✅ Keep this function - it's needed for quiz and course generation
+function safeJSONParse(raw) {
+  let cleaned = raw.trim();
+  cleaned = cleaned
+    .replace(/^```json\s*/i, "")
+    .replace(/^```\s*/i, "")
+    .replace(/```\s*$/i, "");
+
+  try {
+    return JSON.parse(cleaned);
+  } catch (err) {
+    let fixed = "";
+    let insideString = false;
+    for (let i = 0; i < cleaned.length; i++) {
+      const char = cleaned[i];
+      if (char === '"' && cleaned[i - 1] !== "\\") {
+        insideString = !insideString;
+        fixed += char;
+        continue;
+      }
+      if (insideString) {
+        if (char === "\n") {
+          fixed += "\\n";
+          continue;
+        }
+        if (char === "\r") {
+          fixed += "\\r";
+          continue;
+        }
+        if (char === "\t") {
+          fixed += "\\t";
+          continue;
+        }
+      }
+      fixed += char;
+    }
+    return JSON.parse(fixed);
+  }
+}
+
 export async function generateNotes(req, res) {
   try {
     const { topic, level } = req.body;
