@@ -6,48 +6,6 @@ const groq = () =>
     baseURL: "https://api.groq.com/openai/v1",
   });
 
-// Safely parses AI-generated JSON, cleaning up common issues like raw
-// newlines/tabs inside string literals (which are technically invalid JSON
-// but models sometimes produce anyway).
-function safeJSONParse(raw) {
-  let cleaned = raw.trim();
-  cleaned = cleaned
-    .replace(/^```json\s*/i, "")
-    .replace(/^```\s*/i, "")
-    .replace(/```\s*$/i, "");
-
-  try {
-    return JSON.parse(cleaned);
-  } catch (err) {
-    let fixed = "";
-    let insideString = false;
-    for (let i = 0; i < cleaned.length; i++) {
-      const char = cleaned[i];
-      if (char === '"' && cleaned[i - 1] !== "\\") {
-        insideString = !insideString;
-        fixed += char;
-        continue;
-      }
-      if (insideString) {
-        if (char === "\n") {
-          fixed += "\\n";
-          continue;
-        }
-        if (char === "\r") {
-          fixed += "\\r";
-          continue;
-        }
-        if (char === "\t") {
-          fixed += "\\t";
-          continue;
-        }
-      }
-      fixed += char;
-    }
-    return JSON.parse(fixed);
-  }
-}
-
 export async function generateNotes(req, res) {
   try {
     const { topic, level } = req.body;
@@ -57,19 +15,29 @@ export async function generateNotes(req, res) {
         ? "Write for an advanced undergraduate audience -- include time/space complexity discussion where relevant, and don't shy away from precise technical depth."
         : "Write for a beginner undergraduate audience -- keep terminology accessible and build up from fundamentals, while still being academically accurate.";
 
+    const systemPrompt = `You are a university-level Computer Science instructor writing study notes. Write clear, well-organized notes on the given topic, appropriate for undergraduate CS students. ${levelNote}
+
+RULES FOR FORMATTING:
+- Use ## for headings (e.g., ## Introduction)
+- Use ### for subheadings (e.g., ### Key Concepts)
+- Use bullet points with - or * for lists
+- Use **bold** ONLY for key terms
+- Use ACTUAL line breaks between paragraphs (press Enter twice)
+- DO NOT write \\n or \\n\\n as text
+- Use code blocks with \`\`\` for code examples
+
+Structure your response with:
+- A brief definition/introduction
+- Key concepts (as a bulleted list)
+- One worked example (with code if relevant)
+- A short summary
+
+Keep it academically rigorous but clear.`;
+
     const completion = await groq().chat.completions.create({
       model: "openai/gpt-oss-120b",
       messages: [
-        {
-          role: "system",
-          content: `You are a university-level Computer Science instructor writing study notes. Write clear, well-organized notes on the given topic, appropriate for undergraduate CS students. ${levelNote} Structure your response with:
-- A brief definition/introduction
-- Key concepts (as a numbered or bulleted list using markdown)
-- One worked example (with code if relevant, in a markdown code block)
-- A short summary
-
-Use markdown formatting (## headings, **bold**, bullet points, code blocks). Keep it academically rigorous but clear -- this is for university students, not beginners in a simplified sense.`,
-        },
+        { role: "system", content: systemPrompt },
         { role: "user", content: `Topic: ${topic}` },
       ],
       max_tokens: 900,
@@ -137,13 +105,15 @@ export async function generateCourse(req, res) {
   try {
     const { topic } = req.body;
 
-    const completion = await groq().chat.completions.create({
-      model: "openai/gpt-oss-120b",
-      response_format: { type: "json_object" },
-      messages: [
-        {
-          role: "system",
-          content: `You are a university-level Computer Science curriculum designer. Given a topic, design a short course with 4 to 6 lessons that build on each other logically. For each lesson, write full study notes in markdown (similar depth to a single-topic study note: intro, key concepts, one worked example, summary).
+    const systemPrompt = `You are a university-level Computer Science curriculum designer. Given a topic, design a short course with 4 to 6 lessons that build on each other logically. For each lesson, write full study notes in markdown (similar depth to a single-topic study note: intro, key concepts, one worked example, summary).
+
+RULES FOR FORMATTING:
+- Use ## for headings
+- Use ### for subheadings
+- Use bullet points with - or * for lists
+- Use **bold** ONLY for key terms
+- Use ACTUAL line breaks between paragraphs
+- DO NOT write \\n or \\n\\n as text
 
 Respond with ONLY valid JSON, no other text, no markdown code fences, in exactly this shape:
 {
@@ -151,12 +121,15 @@ Respond with ONLY valid JSON, no other text, no markdown code fences, in exactly
   "description": "... (1-2 sentence course description)",
   "category": "... (e.g. Data Structures, Operating Systems, etc.)",
   "lessons": [
-    { "title": "...", "notes": "... (markdown formatted notes for this lesson, use \\n for line breaks inside the JSON string, not literal newlines)" }
+    { "title": "...", "notes": "... (markdown formatted notes for this lesson with actual line breaks)" }
   ]
-}
+}`;
 
-Important: this must be valid, parseable JSON. Any line breaks inside a string value must be written as the two characters backslash-n, never as an actual newline.`,
-        },
+    const completion = await groq().chat.completions.create({
+      model: "openai/gpt-oss-120b",
+      response_format: { type: "json_object" },
+      messages: [
+        { role: "system", content: systemPrompt },
         { role: "user", content: `Course topic: ${topic}` },
       ],
       max_tokens: 3000,
