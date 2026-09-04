@@ -219,9 +219,9 @@ function Hero() {
           diagrams, and get coding help — all in one place.
         </motion.p>
 
-        {/* Robot + Blackboard section - JUST A LITTLE GAP */}
-        <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-3 w-full mb-0">
-          {/* Robot */}
+        {/* Robot + Blackboard section - MINIMAL GAP */}
+        <div className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-1 w-full mb-0">
+          {/* Robot - MOVED UP */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
