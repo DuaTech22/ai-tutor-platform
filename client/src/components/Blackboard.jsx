@@ -10,8 +10,8 @@ function Blackboard({
   onLevelChange,
 }) {
   return (
-    // ✅ Smaller max width
-    <div className="relative w-full max-w-[280px] sm:max-w-[320px] mx-auto">
+    // ✅ Made narrower - reduced max width
+    <div className="relative w-full max-w-[200px] sm:max-w-[240px] md:max-w-[260px] mx-auto">
       <div className="relative rounded-lg p-2 sm:p-3 bg-gradient-to-b from-[#8b5a2b] to-[#6b4423] shadow-2xl">
         <div
           className="relative rounded-md overflow-hidden px-3 sm:px-4 py-3 sm:py-4 flex flex-col"
@@ -29,7 +29,6 @@ function Blackboard({
             }}
           />
 
-          {/* ✅ Smaller header text */}
           <p
             className="relative z-10 text-white/90 text-xs sm:text-sm md:text-base mb-1.5 sm:mb-2 border-b border-dashed border-white/20 pb-1.5 sm:pb-2 flex-shrink-0"
             style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
@@ -37,7 +36,6 @@ function Blackboard({
             Nova — Study Notes
           </p>
 
-          {/* ✅ Smaller text area */}
           <div className="relative z-10 h-28 sm:h-32 md:h-40 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-indigo-500 scrollbar-track-transparent">
             {thinking ? (
               <p
@@ -65,7 +63,6 @@ function Blackboard({
             )}
           </div>
 
-          {/* ✅ Smaller controls */}
           <div className="relative z-10 flex justify-center pt-1.5 sm:pt-2 mt-1.5 sm:mt-2 border-t border-dashed border-white/20 flex-shrink-0">
             <div className="flex flex-col items-center gap-1 sm:gap-1.5">
               <div className="flex bg-white/5 border border-white/10 rounded-full p-0.5 text-[8px] sm:text-[10px]">

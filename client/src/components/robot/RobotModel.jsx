@@ -66,7 +66,8 @@ function RobotModel({ emotion = "idle" }) {
 
   return (
     <group ref={group}>
-      <primitive object={scene} scale={0.85} />
+      {/* ✅ Scale up to 1.0 for bigger robot */}
+      <primitive object={scene} scale={1.0} />
     </group>
   );
 }
