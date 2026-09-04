@@ -1,16 +1,20 @@
 import { Canvas } from "@react-three/fiber";
-import { Suspense } from "react";
-import RobotModel from "./RobotModel.jsx";
+import { OrbitControls } from "@react-three/drei";
+import Robot from "./robot/Robot.jsx";
 
 function RobotScene({ emotion }) {
   return (
-    <div className="w-full max-w-lg h-[500px] mx-auto">
-      <Canvas camera={{ fov: 40 }}>
-        <ambientLight intensity={0.8} />
+    <div className="w-[200px] sm:w-[240px] md:w-[280px] h-[200px] sm:h-[240px] md:h-[280px]">
+      <Canvas camera={{ position: [2, 2, 5], fov: 45 }}>
+        <ambientLight intensity={0.5} />
         <directionalLight position={[5, 5, 5]} intensity={1} />
-        <Suspense fallback={null}>
-          <RobotModel emotion={emotion} />
-        </Suspense>
+        <pointLight position={[-5, 0, 5]} intensity={0.5} />
+        <Robot emotion={emotion} />
+        <OrbitControls
+          enableZoom={false}
+          enablePan={false}
+          enableRotate={false}
+        />
       </Canvas>
     </div>
   );
