@@ -219,22 +219,24 @@ function Hero() {
           diagrams, and get coding help — all in one place.
         </motion.p>
 
-        {/* Robot + Blackboard section */}
-        <div className="flex flex-col md:flex-row items-start justify-center gap-4 sm:gap-6 md:gap-8 w-full mb-0">
+        {/* ✅ Robot + Blackboard section - Robot BIGGER, Blackboard SMALLER */}
+        <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8 w-full mb-0">
+          {/* Robot - BIGGER */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="flex justify-center items-center flex-shrink-0 w-[200px] sm:w-[240px] md:w-[280px] mx-auto md:mx-0"
+            className="flex justify-center items-center flex-shrink-0 w-[280px] sm:w-[320px] md:w-[380px] mx-auto md:mx-0"
           >
             <RobotScene emotion={emotion} />
           </motion.div>
 
+          {/* Blackboard - SMALLER */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="mx-auto md:mx-0 w-full max-w-xs sm:max-w-sm"
+            className="mx-auto md:mx-0 w-full max-w-[280px] sm:max-w-[320px]"
           >
             <Blackboard
               text={boardText}
