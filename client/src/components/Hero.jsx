@@ -219,14 +219,14 @@ function Hero() {
           diagrams, and get coding help — all in one place.
         </motion.p>
 
-        {/* Robot + Blackboard section - REDUCED GAP */}
-        <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4 w-full mb-0">
-          {/* Robot */}
+        {/* ✅ Robot + Blackboard - MINIMAL gap, Robot moved UP */}
+        <div className="flex flex-col md:flex-row items-center justify-center gap-0 md:gap-1 w-full mb-0">
+          {/* Robot - MOVED UP */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="flex justify-center items-center flex-shrink-0 w-[280px] sm:w-[320px] md:w-[380px] mx-auto"
+            className="flex justify-center items-center flex-shrink-0 w-[280px] sm:w-[320px] md:w-[380px] mx-auto -mt-4 md:-mt-8"
           >
             <RobotScene emotion={emotion} />
           </motion.div>
