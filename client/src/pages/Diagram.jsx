@@ -14,12 +14,11 @@ const suggestions = [
   { label: "Client-Server Request Flow", type: "sequence" },
   { label: "Bubble Sort Steps", type: "flowchart" },
   { label: "Database Normalization Stages", type: "flowchart" },
-  { label: "Class Diagram: Student Management", type: "class" },
+  { label: "Student Management System", type: "component" },
   { label: "ATM Withdrawal Sequence", type: "sequence" },
-  { label: "Online Shopping Component", type: "component" },
 ];
 
-function Whiteboard() {
+function Diagram() {
   const { token } = useAuth();
   const [topic, setTopic] = useState("");
   const [diagramType, setDiagramType] = useState("flowchart");
@@ -28,7 +27,7 @@ function Whiteboard() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [renderFailed, setRenderFailed] = useState(false);
-  const [format, setFormat] = useState("mermaid"); // "mermaid" or "plantuml"
+  const [format, setFormat] = useState("mermaid");
 
   const handleGenerate = async (e) => {
     e?.preventDefault();
@@ -42,29 +41,22 @@ function Whiteboard() {
 
     try {
       if (format === "plantuml") {
-        // Use PlantUML
         const result = await generatePlantUML(topic, diagramType, token);
         setDiagram(result.diagram);
         setImageUrl(result.imageUrl);
-        console.log("✅ PlantUML diagram generated!");
       } else {
-        // Use Mermaid
         const result = await generateDiagram(topic, token);
         setDiagram(result);
-        console.log("✅ Mermaid diagram generated!");
       }
     } catch (err) {
       console.error("❌ Diagram error:", err);
 
-      // If PlantUML fails, try Mermaid as fallback
       if (format === "plantuml") {
         try {
           const result = await generateDiagram(topic, token);
           setDiagram(result);
           setFormat("mermaid");
-          setError(
-            "PlantUML failed, falling back to Mermaid. Try again if you want PlantUML.",
-          );
+          setError("PlantUML failed, falling back to Mermaid.");
         } catch (fallbackErr) {
           setError(
             err.response?.data?.error ||
@@ -87,7 +79,7 @@ function Whiteboard() {
       <Navbar />
       <div className="pt-24 px-4 md:px-6 max-w-4xl mx-auto pb-20 text-white">
         <h1 className="font-academic text-2xl md:text-3xl font-bold mb-2">
-          Whiteboard
+          Diagram
         </h1>
         <p className="text-slate-400 mb-6 text-sm md:text-base">
           Ask Nova to draw a diagram for any Computer Science concept. Choose
@@ -111,7 +103,7 @@ function Whiteboard() {
             </button>
           </div>
 
-          {/* ⭐ FORMAT SELECTOR - Mermaid vs PlantUML */}
+          {/* Format Selector */}
           <div className="flex flex-wrap items-center gap-3">
             <span className="text-slate-400 text-xs font-medium">Format:</span>
             <div className="flex bg-white/5 border border-white/10 rounded-full p-0.5 text-xs">
@@ -124,7 +116,7 @@ function Whiteboard() {
                     : "text-slate-400 hover:text-white"
                 }`}
               >
-                Mermaid (Simple)
+                Mermaid
               </button>
               <button
                 type="button"
@@ -135,31 +127,29 @@ function Whiteboard() {
                     : "text-slate-400 hover:text-white"
                 }`}
               >
-                PlantUML (Advanced)
+                PlantUML
               </button>
             </div>
           </div>
 
-          {/* ⭐ DIAGRAM TYPE SELECTOR - Only for PlantUML */}
+          {/* Diagram Type Selector - Only for PlantUML */}
           {format === "plantuml" && (
             <div className="flex flex-wrap items-center gap-2">
               <span className="text-slate-400 text-xs font-medium">Type:</span>
-              {["flowchart", "sequence", "class", "component", "activity"].map(
-                (type) => (
-                  <button
-                    key={type}
-                    type="button"
-                    onClick={() => setDiagramType(type)}
-                    className={`text-xs px-3 py-1 rounded-full transition-colors ${
-                      diagramType === type
-                        ? "bg-indigo-500 text-white"
-                        : "bg-white/5 border border-white/10 text-slate-300 hover:bg-white/10"
-                    }`}
-                  >
-                    {type.charAt(0).toUpperCase() + type.slice(1)}
-                  </button>
-                ),
-              )}
+              {["flowchart", "sequence", "component"].map((type) => (
+                <button
+                  key={type}
+                  type="button"
+                  onClick={() => setDiagramType(type)}
+                  className={`text-xs px-3 py-1 rounded-full transition-colors ${
+                    diagramType === type
+                      ? "bg-indigo-500 text-white"
+                      : "bg-white/5 border border-white/10 text-slate-300 hover:bg-white/10"
+                  }`}
+                >
+                  {type.charAt(0).toUpperCase() + type.slice(1)}
+                </button>
+              ))}
             </div>
           )}
         </form>
@@ -255,4 +245,4 @@ function Whiteboard() {
   );
 }
 
-export default Whiteboard;
+export default Diagram;

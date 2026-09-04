@@ -11,7 +11,7 @@ import Study from "./pages/Study.jsx";
 import SavedNotes from "./pages/SavedNotes.jsx";
 import Forum from "./pages/Forum.jsx";
 import CodingAssistant from "./pages/CodingAssistant.jsx";
-import Diagram from "./pages/Diagram.jsx"; // ✅ Changed from Whiteboard
+import Diagram from "./pages/Diagram.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx";
 import ResetPassword from "./pages/ResetPassword.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
@@ -61,10 +61,10 @@ function App() {
         }
       />
       <Route
-        path="/diagram" // ✅ Changed from /whiteboard
+        path="/diagram"
         element={
           <ProtectedRoute>
-            <Diagram /> // ✅ Changed from Whiteboard
+            <Diagram />
           </ProtectedRoute>
         }
       />
