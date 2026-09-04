@@ -219,9 +219,9 @@ function Hero() {
           diagrams, and get coding help — all in one place.
         </motion.p>
 
-        {/* ✅ Robot + Blackboard section - Robot BIGGER, Blackboard SMALLER */}
+        {/* Robot + Blackboard section */}
         <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8 w-full mb-0">
-          {/* Robot - BIGGER */}
+          {/* Robot */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -231,22 +231,23 @@ function Hero() {
             <RobotScene emotion={emotion} />
           </motion.div>
 
-          {/* Blackboard - WIDER */}
-<motion.div
-  initial={{ opacity: 0, x: 20 }}
-  animate={{ opacity: 1, x: 0 }}
-  transition={{ duration: 0.6, delay: 0.4 }}
-  className="mx-auto md:mx-0 w-full max-w-[340px] sm:max-w-[400px] md:max-w-[440px]"
->
-  <Blackboard
-    text={boardText}
-    thinking={thinking}
-    onTranscript={handleBoardTranscript}
-    onStop={handleBoardStop}
-    level={level}
-    onLevelChange={setLevel}
-  />
-</motion.div>
+          {/* ✅ Blackboard - WIDER */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="mx-auto md:mx-0 w-full max-w-[340px] sm:max-w-[400px] md:max-w-[440px]"
+          >
+            <Blackboard
+              text={boardText}
+              thinking={thinking}
+              onTranscript={handleBoardTranscript}
+              onStop={handleBoardStop}
+              level={level}
+              onLevelChange={setLevel}
+            />
+          </motion.div>
+        </div>
 
         {/* Button */}
         <motion.div
