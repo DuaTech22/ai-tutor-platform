@@ -231,23 +231,22 @@ function Hero() {
             <RobotScene emotion={emotion} />
           </motion.div>
 
-          {/* Blackboard - SMALLER */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="mx-auto md:mx-0 w-full max-w-[280px] sm:max-w-[320px]"
-          >
-            <Blackboard
-              text={boardText}
-              thinking={thinking}
-              onTranscript={handleBoardTranscript}
-              onStop={handleBoardStop}
-              level={level}
-              onLevelChange={setLevel}
-            />
-          </motion.div>
-        </div>
+          {/* Blackboard - WIDER */}
+<motion.div
+  initial={{ opacity: 0, x: 20 }}
+  animate={{ opacity: 1, x: 0 }}
+  transition={{ duration: 0.6, delay: 0.4 }}
+  className="mx-auto md:mx-0 w-full max-w-[340px] sm:max-w-[400px] md:max-w-[440px]"
+>
+  <Blackboard
+    text={boardText}
+    thinking={thinking}
+    onTranscript={handleBoardTranscript}
+    onStop={handleBoardStop}
+    level={level}
+    onLevelChange={setLevel}
+  />
+</motion.div>
 
         {/* Button */}
         <motion.div

@@ -10,8 +10,8 @@ function Blackboard({
   onLevelChange,
 }) {
   return (
-    // ✅ Made narrower - reduced max width
-    <div className="relative w-full max-w-[200px] sm:max-w-[240px] md:max-w-[260px] mx-auto">
+    // ✅ Made WIDER - increased max width
+    <div className="relative w-full max-w-[340px] sm:max-w-[400px] md:max-w-[440px] mx-auto">
       <div className="relative rounded-lg p-2 sm:p-3 bg-gradient-to-b from-[#8b5a2b] to-[#6b4423] shadow-2xl">
         <div
           className="relative rounded-md overflow-hidden px-3 sm:px-4 py-3 sm:py-4 flex flex-col"
