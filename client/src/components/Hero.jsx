@@ -219,24 +219,24 @@ function Hero() {
           diagrams, and get coding help — all in one place.
         </motion.p>
 
-        {/* Robot + Blackboard section - MINIMAL GAP */}
-        <div className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-1 w-full mb-0">
-          {/* Robot - MOVED UP */}
+        {/* Robot + Blackboard section - PULL THEM CLOSER */}
+        <div className="flex flex-col md:flex-row items-center justify-center w-full mb-0">
+          {/* Robot - MOVED UP AND RIGHT */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="flex justify-center items-center flex-shrink-0 w-[280px] sm:w-[320px] md:w-[380px] mx-auto -mt-4 md:-mt-8"
+            className="flex justify-center items-center flex-shrink-0 w-[280px] sm:w-[320px] md:w-[380px] mx-auto -mt-4 md:-mt-8 md:-mr-2"
           >
             <RobotScene emotion={emotion} />
           </motion.div>
 
-          {/* Blackboard */}
+          {/* Blackboard - PULL LEFT */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="mx-auto w-full max-w-[340px] sm:max-w-[400px] md:max-w-[440px]"
+            className="mx-auto w-full max-w-[340px] sm:max-w-[400px] md:max-w-[440px] md:-ml-2"
           >
             <Blackboard
               text={boardText}
